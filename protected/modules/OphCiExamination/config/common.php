@@ -18,6 +18,14 @@
  */
 
 return array(
+    'components' =>
+        array(
+            'request' => array(
+                'noCsrfValidationRoutes'=>array(
+                    'OphCiExamination/api/uploadEditedCanvas'
+                )
+            )
+        ),
     'params' => array(
         'admin_menu' => array(
             'Inject. Mgmt - No Treatment Reasons' => '/OphCiExamination/admin/viewAllOphCiExamination_InjectionManagementComplex_NoTreatmentReason',

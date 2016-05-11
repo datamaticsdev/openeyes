@@ -37,6 +37,8 @@ class DefaultController extends \BaseEventTypeController
         'getPreviousIOPAverage' => self::ACTION_TYPE_FORM,
         'getPostOpComplicationList' => self::ACTION_TYPE_FORM,
         'getPostOpComplicationAutocopleteList' => self::ACTION_TYPE_FORM,
+        'storeCanvasForEditing' => self::ACTION_TYPE_FORM,
+        'downloadEditedCanvas' => self::ACTION_TYPE_FORM
     );
 
     // if set to true, we are advancing the current event step
@@ -60,6 +62,8 @@ class DefaultController extends \BaseEventTypeController
     protected function beforeAction($action)
     {
         Yii::app()->assetManager->registerScriptFile('js/spliteventtype.js', null, null, \AssetManager::OUTPUT_SCREEN);
+        Yii::app()->clientScript->registerScriptFile("{$this->assetPath}/js/jquery.qrcode-0.12.0.js", \CClientScript::POS_HEAD);
+        Yii::app()->clientScript->registerScriptFile("{$this->assetPath}/js/eyedrawCapture.js", \CClientScript::POS_HEAD);
         $this->jsVars['OE_MODEL_PREFIX'] = 'OEModule_OphCiExamination_models_';
         return parent::beforeAction($action);
     }
@@ -895,6 +899,69 @@ class DefaultController extends \BaseEventTypeController
                 $value = new models\OphCiExamination_IntraocularPressure_Value;
                 $this->renderPartial('_qualitative_scale', array('value' => $value, 'scale' => $scale, 'side' => @$_GET['side'], 'index' => @$_GET['index']));
             }
+        }
+    }
+
+    private function getFilePathForUuid($uuid, $edited = false)
+    {
+        $path = \Yii::app()->basePath.DIRECTORY_SEPARATOR."runtime" . DIRECTORY_SEPARATOR . "cache" . DIRECTORY_SEPARATOR . "canvasEdits";
+        if (!is_dir($path)) {
+            if (!mkdir($path, 0775, true))
+                throw new \Exception("Cannot create path for canvas storage.");
+        }
+
+        return $path . DIRECTORY_SEPARATOR . $uuid . (($edited) ? '_edit' : '') . ".png";
+    }
+
+    /**
+     * Save submitted canvas png data for retrieval by external app
+     *
+     * @throws Exception
+     * @throws \Exception
+     */
+    public function actionStoreCanvasForEditing()
+    {
+        if (!empty($_POST['image'])) {
+            $blob = $_POST['image'];
+            $uuid = \Helper::generateUuid();
+            $check_count = 0;
+            while (file_exists($this->getFilePathForUuid($uuid)) && $check_count++ < 3) {
+                $uuid = \Helper::generateUuid();
+            }
+            if (file_exists($this->getFilePathForUuid($uuid))) {
+                throw new \Exception("Cannot get unique filename store for canvas image {$uuid}");
+            }
+
+            if (!@file_put_contents($this->getFilePathForUuid($uuid), base64_decode(preg_replace('/^data\:image\/png;base64,/','',$blob)))) {
+                throw new \Exception("Failed to write to {$this->getFilePathForUuid($uuid)}: check permissions.");
+            }
+
+            $response = array(
+                'uuid' => $uuid,
+            );
+
+            echo json_encode($response);
+        }
+        else {
+            throw new \Exception("image data required");
+        }
+
+    }
+
+    public function actionDownloadEditedCanvas($uuid)
+    {
+        if (!file_exists($this->getFilePathForUuid($uuid))) {
+            throw new \Exception("Unrecognised UUID");
+        }
+
+        $edited_fname = $this->getFilePathForUuid($uuid, true);
+        if (!file_exists($edited_fname) || file_exists($edited_fname . '.lock')) {
+            header('HTTP/1.1 ' . 204);
+            header('Content-type: text/html');
+            echo '0';
+        }
+        else {
+            \Yii::app()->getRequest()->sendFile($uuid, base64_encode(file_get_contents($edited_fname)));
         }
     }
 
