@@ -62,3 +62,13 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$('.eyedraw-capture').canvaseditor({
+			baseUrl: '<?= \Yii::app()->getBaseUrl(true) ?>',
+			csrfToken: YII_CSRF_TOKEN
+		});
+
+	});
+</script>

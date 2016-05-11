@@ -58,4 +58,7 @@
 		<button class="ed_report secondary small">Report</button>
 		<button class="ed_clear secondary small">Clear</button>
 	</div>
+	<div class="field-row">
+		<button class="eyedraw-capture secondary small" data-target-canvas="ed_canvas_edit_<?=$side?>_<?=$element->elementType->id?>">eyePad Draw</button>
+	</div>
 </div>
