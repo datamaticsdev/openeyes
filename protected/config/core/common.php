@@ -17,6 +17,9 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
+$today = new DateTime();
+$auto_worklist_header = $today->format('l') . " Clinic - " . $today->format('d F Y');
+
 return array(
 	'name' => 'OpenEyes',
 
@@ -239,6 +242,58 @@ return array(
 	),
 
 	'params'=>array(
+		'dashboard_items' => array(
+			array(
+				'options' => array(
+					'js-toggle-open' => true
+				),
+			'title' => 'Automatic Worklists',
+			'content' => <<<EOF
+    <h1>$auto_worklist_header</h1>
+<div class="row">
+
+    <div class="large-12 column">
+
+            <table class="grid audit-logs worklist" id="worklist-table-11">
+                <thead>
+                <tr>
+                                        <th>Time</th>
+                                        <th>Hospital No.</th>
+                    <th class="large-2">Patient</th>
+                    <th>Gender</th>
+                    <th>DOB</th>
+                </tr>
+                </thead>
+                <tbody id="worklist-11-patients">
+                                    <tr data-url="/patient/view/19434" class="clickable">
+                                                    <td>10:30</td>
+                                                <td>1009465</td>
+                        <td style="white-space: nowrap;">COFFIN, Violet (Mrs)</td>
+                        <td>Female</td>
+                        <td>19 Mar 1942</td>
+                    </tr>
+                                    <tr data-url="/patient/view/19766" class="clickable">
+                                                    <td>11:00</td>
+                                                <td>1009797</td>
+                        <td style="white-space: nowrap;">COMPTON, Elizabeth (Mrs)</td>
+                        <td>Female</td>
+                        <td>16 Aug 1967</td>
+                    </tr>
+                                </tbody>
+            </table>
+            </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('table.worklist').on('click', 'tr.clickable', function(e) {
+        e.preventDefault();
+        window.location.href = $(this).data('url');
+    });
+});
+</script>
+EOF
+			)
+		),
 		'pseudonymise_patient_details' => false,
 		'ab_testing' => false,
 		'auth_source' => 'BASIC', // Options are BASIC or LDAP.
