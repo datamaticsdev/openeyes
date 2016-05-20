@@ -245,15 +245,46 @@ return array(
 				'patients' => array(
 					array(
 						'patient_id' => 19766,
-						'scheduledtime' => '09:30',
-						'arrived' => '09:46'
+						'scheduledtime' => '10:00',
+						'arrived' => '09:58'
 					),
 					array(
-						'patient_id' => 19434,
-						'scheduledtime' => '10:00',
+						'patient_id' => 19192,
+						'scheduledtime' => '10:30',
 						'arrived' => '-'
 					),
-				)
+					array(
+						'patient_id' => 19302,
+						'scheduledtime' => '11:00',
+						'arrived' => '-'
+					),
+					array(
+						'patient_id' => 19311,
+						'scheduledtime' => '11:30',
+						'arrived' => '-'
+					),
+					array(
+						'patient_id' => 19402,
+						'scheduledtime' => '12:00',
+						'arrived' => '-'
+					),
+					array(
+						'patient_id' => 19537,
+						'scheduledtime' => '12:30',
+						'arrived' => '-'
+					),
+					array(
+						'patient_id' => 19647,
+						'scheduledtime' => '13:00',
+						'arrived' => '-'
+					),
+					array(
+						'patient_id' => 19751,
+						'scheduledtime' => '13:30',
+						'arrived' => '-'
+					)
+				),
+
 			)
 		),
 		'pseudonymise_patient_details' => false,
