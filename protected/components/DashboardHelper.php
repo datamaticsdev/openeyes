@@ -114,7 +114,11 @@ class DashboardHelper {
                 
             } else if ( isset($item['title']) && isset($item['content']) ) {
                 $renders[] = $item;
+            } elseif ( isset($item['fakeClinicList'])) {
+                // TODO: Remove this option
+                $renders[] = $this->renderFakeClinicList(@$item['patients']);
             }
+
             else {
                 throw new Exception("Invalid dashboard configuration, module or static content definition required");
             }
@@ -138,5 +142,101 @@ class DashboardHelper {
         }
         
         return $renders;
+    }
+
+    /**
+     * @TODO: DELETE THIS MONSTROSITY
+     *
+     * @param $patients
+     * @return array|void
+     */
+    protected function renderFakeClinicList($patients)
+    {
+        if (!$patients) {
+            return;
+        }
+
+        $today = new DateTime();
+        $auto_worklist_header = $today->format('l') . " Clinic - " . $today->format('d F Y');
+
+        foreach ($patients as $p) {
+            $worklist_patients[] = array(
+                'patient' => Patient::model()->findByPk($p['patient_id']),
+                'scheduledtime' => @$p['scheduledtime'],
+                'arrived' => @$p['arrived']
+            );
+        }
+
+
+        $rows = "";
+        foreach ($worklist_patients as $wp) {
+            $rows .= <<<EOF
+	<tr data-url="/patient/view/{$wp['patient']->id}" class="clickable">
+		<td>{$wp['scheduledtime']}</td>
+		<td>{$wp['arrived']}</td>
+		<td>{$wp['patient']->hos_num}</td>
+		<td style="white-space: nowrap;">{$wp['patient']->HSCICName}</td>
+		<td>{$wp['patient']->genderString}</td>
+		<td>{$wp['patient']->NHSDate('dob')}</td>
+	</tr>
+EOF;
+        }
+
+        $content = <<<EOF
+    <h1>$auto_worklist_header</h1>
+<div class="row">
+
+    <div class="large-12 column">
+
+            <table class="grid audit-logs worklist" id="worklist-table-11">
+                <thead>
+                <tr>
+                                        <th>Time</th>
+                                        <th>Arrived</th>
+                                        <th>Hospital No.</th>
+                    <th class="large-2">Patient</th>
+                    <th>Gender</th>
+                    <th>DOB</th>
+                </tr>
+                </thead>
+                <tbody id="worklist-11-patients">
+                	$rows
+					<tr data-url="/patient/view/19766" class="clickable">
+						<td>09:30</td>
+						<td>09:45</td>
+						<td>1009797</td>
+						<td style="white-space: nowrap;">COMPTON, Elizabeth (Mrs)</td>
+						<td>Female</td>
+						<td>16 Aug 1967</td>
+					</tr>
+					<tr data-url="/patient/view/19434" class="clickable">
+						<td>10:30</td>
+						<td>-</td>
+						<td>1009465</td>
+						<td style="white-space: nowrap;">COFFIN, Violet (Mrs)</td>
+						<td>Female</td>
+						<td>19 Mar 1942</td>
+					</tr>
+				</tbody>
+            </table>
+            </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('table.worklist').on('click', 'tr.clickable', function(e) {
+        e.preventDefault();
+        window.location.href = $(this).data('url');
+    });
+});
+</script>
+EOF;
+
+        return array(
+            'options' => array(
+                'js-toggle-open' => true
+            ),
+            'title' => 'Automatic Worklists',
+            'content' => $content
+        );
     }
 }
