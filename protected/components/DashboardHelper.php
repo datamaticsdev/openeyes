@@ -201,22 +201,6 @@ EOF;
                 </thead>
                 <tbody id="worklist-11-patients">
                 	$rows
-					<tr data-url="/patient/view/19766" class="clickable">
-						<td>09:30</td>
-						<td>09:45</td>
-						<td>1009797</td>
-						<td style="white-space: nowrap;">COMPTON, Elizabeth (Mrs)</td>
-						<td>Female</td>
-						<td>16 Aug 1967</td>
-					</tr>
-					<tr data-url="/patient/view/19434" class="clickable">
-						<td>10:30</td>
-						<td>-</td>
-						<td>1009465</td>
-						<td style="white-space: nowrap;">COFFIN, Violet (Mrs)</td>
-						<td>Female</td>
-						<td>19 Mar 1942</td>
-					</tr>
 				</tbody>
             </table>
             </div>
