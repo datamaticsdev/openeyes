@@ -254,6 +254,11 @@ return array(
 						'arrived' => '-'
 					),
 					array(
+						'patient_id' => 1840181,
+						'scheduledtime' => '10:45',
+						'arrived' => '10:23'
+					),
+					array(
 						'patient_id' => 19302,
 						'scheduledtime' => '11:00',
 						'arrived' => '-'
@@ -266,6 +271,11 @@ return array(
 					array(
 						'patient_id' => 19402,
 						'scheduledtime' => '12:00',
+						'arrived' => '-'
+					),
+					array(
+						'patient_id' => 1776515,
+						'scheduledtime' => '12:15',
 						'arrived' => '-'
 					),
 					array(
