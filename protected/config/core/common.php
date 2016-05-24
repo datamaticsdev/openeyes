@@ -251,7 +251,7 @@ return array(
 					array(
 						'patient_id' => 19192,
 						'scheduledtime' => '10:30',
-						'arrived' => '-'
+						'arrived' => 'DNA'
 					),
 					array(
 						'patient_id' => 19573,
@@ -275,8 +275,7 @@ return array(
 					),
 					array(
 						'patient_id' => 17925,
-						'scheduledtime' => '11:0
-						40',
+						'scheduledtime' => '11:40',
 						'arrived' => '-'
 					),
 					array(
