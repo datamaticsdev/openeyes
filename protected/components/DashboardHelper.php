@@ -163,6 +163,7 @@ class DashboardHelper {
             $worklist_patients[] = array(
                 'patient' => Patient::model()->findByPk($p['patient_id']),
                 'scheduledtime' => @$p['scheduledtime'],
+                'vatime' => @$p['vatime'],
                 'arrived' => @$p['arrived']
             );
         }
