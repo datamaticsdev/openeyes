@@ -20,14 +20,11 @@
 ?>
 <main class="mdl-layout__content mdl-color--white-100">
     <div id="dash-grid" class="mdl-grid">
-        <div class="mdl-cell--6-col">
-            <div id="iopchart">
+        <div class="mdl-cell-side mdl-cell--6-col">
+            <div id="iopchart" class="mdl-cell-top">
 
             </div>
-            <div id="vachart">
-
-            </div>
-            <div id="mdchart">
+            <div id="vachart" class="mdl-cell-bottom">
 
             </div>
         </div>
