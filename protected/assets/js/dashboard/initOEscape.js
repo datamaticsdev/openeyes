@@ -290,8 +290,7 @@ $(document).ready(function() {
 
 
     addRegressionChart();
-    $('.regression_chart').hide();
-    //$('.regression_chart').show();
+    //$('#regression_chart').hide();
 });
 
 
@@ -320,7 +319,7 @@ function addRegressionChart(){
                 }
             },
             title: {
-                text: 'Y= n*x+b',
+                text: '',
                 align: 'left'
             },
             legend:{
