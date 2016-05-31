@@ -161,8 +161,9 @@ $(document).ready(function() {
             borderWidth: 1,
             layout: 'vertical',
             shadow: true,
-            margin: 10,
-            y: 24
+            margin: 40,
+            y: 5,
+            x: -25
         },
 
         title : {
@@ -187,7 +188,7 @@ $(document).ready(function() {
             },
             title:{
                 text: 'Visual Acuity',
-                x: -30
+                x: -15
             },
         },{
             min: -15,
@@ -196,11 +197,12 @@ $(document).ready(function() {
             labels:
             {
                 align: 'right',
-                x: 2,
+                x: 20,
                 y: -2
             },
             title:{
-                text: 'Mean Deviation'
+                text: 'Mean Deviation',
+                x: 22
             },
             opposite: true
         }
@@ -452,7 +454,7 @@ function getSideId(sidename){
 function AddOperation(item, index){
     //console.log(item);
 
-    var color, yshift=200;
+    var color, yshift=150;
 
     if(item[2] == 1){
         color = '#c653c6';
