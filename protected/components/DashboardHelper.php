@@ -174,8 +174,8 @@ class DashboardHelper {
             $rows .= <<<EOF
 	<tr data-url="/patient/view/{$wp['patient']->id}" class="clickable">
 		<td>{$wp['scheduledtime']}</td>
-		<td>{$wp['vatime']}</td>
 		<td>{$wp['arrived']}</td>
+		<td>{$wp['vatime']}</td>
 		<td>{$wp['patient']->hos_num}</td>
 		<td style="white-space: nowrap;">{$wp['patient']->HSCICName}</td>
 		<td>{$wp['patient']->genderString}</td>
