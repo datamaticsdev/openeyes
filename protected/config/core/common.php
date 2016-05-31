@@ -246,6 +246,7 @@ return array(
 					array(
 						'patient_id' => 19766,
 						'scheduledtime' => '10:00',
+						'vatime' => '10:24',
 						'arrived' => '09:58'
 					),
 					array(
@@ -256,6 +257,7 @@ return array(
 					array(
 						'patient_id' => 19573,
 						'scheduledtime' => '10:40',
+						'vatime'=>'10:52',
 						'arrived' => '10:38'
 					),
 					array(
