@@ -16,33 +16,26 @@
  * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-$dirname = dirname(__FILE__);
-if (file_exists($dirname . '/vendor/autoload.php'))
-    require_once($dirname . '/vendor/autoload.php');
 
-if (file_exists($dirname . '/vendor/yiisoft/yii/framework/yii.php')) {
-    $yii = $dirname . '/vendor/yiisoft/yii/framework/yii.php';
-} else {
-    $yii = $dirname . '/protected/yii/framework/yii.php';
-}
-$config = $dirname . '/protected/config/main.php';
-$common_config = $dirname . '/protected/config/core/common.php';
-$local_common_config = $dirname . '/protected/config/local/common.php';
+?>
 
-foreach (array($common_config, $local_common_config) as $configfile) {
-    foreach (@file($configfile) as $line) {
-        if (preg_match('/^[\s\t]+\'environment\'[\s\t]*=>[\s\t]*\'([a-z]+)\'/', $line, $m)) {
-            $environment = $m [1];
-        }
-    }
-}
-
-if (isset ($environment) && $environment === 'dev') {
-    define('YII_DEBUG', true);
-}
-
-// specify how many levels of call stack should be shown in each log message
-defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', 3);
-
-require_once($yii);
-Yii::createWebApplication($config)->run();
+<div class="report-search">
+    <form class="report-search-form mdl-color-text--grey-600" action="/report/reportData">
+        <input type="hidden" name="report" value="<?= $report->getApp()->getRequest()->getQuery('report'); ?>" />
+        <fieldset>
+            <div class="mdl-selectfield">
+                <label for="pcr-risk-mode">Rendering mode</label>
+                <select name="mode" id="pcr-risk-mode" class="browser-default">
+                    <?php foreach($modes as $mode):?>
+                        <option value="<?=$mode['id']?>"><?=$mode['name']?></option>
+                    <?php endforeach;?>
+                </select>
+            </div>
+            <div>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</div>
