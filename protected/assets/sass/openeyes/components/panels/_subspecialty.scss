@@ -1,0 +1,111 @@
+.panel {
+  &.specialty {
+    ol.subspecialties {
+      margin-left: 2px;
+    }
+    .subspecialty {
+      list-style: none;
+      @include border-radius(4px 4px 4px 4px);
+      background: white;
+      padding: 3px;
+      margin-bottom: 2px;
+      &.selected {
+        background: #aaaaaa;
+      }
+      .tag {
+        @include border-radius(2px 2px 2px 2px);
+        text-align: right;
+        float: right;
+        padding: 1px;
+        background-color: lightgrey;
+      }
+    }
+    ol.events {
+      border-top: 1px dotted #cccccc;
+      margin: 5px 0 0 0;
+      padding: 4px 0 0 0;
+      a {
+        @include border-radius(0 6px 6px 0);
+        display: block;
+        font-size: $default-font-size;
+        padding: 0 8px 0 6px;
+        &:hover {
+          background: #3665ff image-url("_elements/icons/event/event_open_arrow.png") right center no-repeat;
+          color: white;
+        }
+      }
+      li {
+        list-style: none;
+        margin: 0 0 4px 0;
+        position: relative;
+        &.lowlight {
+          a {
+            color: grey;
+            &:hover {
+              color: lightgrey;
+            }
+          }
+        }
+        .tag {
+          @include border-radius(2px 2px 2px 2px);
+          text-align: right;
+          padding: 1px;
+          background-color: lightgrey;
+          font-size: 0.3em;
+        }
+      }
+      .event-type {
+        display: inline-block;
+        width: 35px;
+        background: image-url("_elements/icons/event/status/quicklook.png") right top no-repeat;
+        &:hover {
+          background-image: image-url("_elements/icons/event/status/quicklook-hover.png");
+        }
+        &.alert {
+          background-image: image-url("_elements/icons/event/status/alert.png");
+          &:hover {
+            background-image: image-url("_elements/icons/event/status/alert-hover.png");
+          }
+        }
+      }
+      .ev_date {
+        padding-left: 15px;
+        background: image-url("_elements/icons/event/small/datetime-past.png") left center no-repeat;
+      }
+      .event-date {
+        display: inline-block;
+        padding-left: 15px;
+        .day,
+        .mth,
+        .yr {
+          display: inline-block;
+        }
+        .day {
+          width: rem-calc(21px);
+          text-align: right;
+          padding-right: 6px;
+        }
+        .mth {
+          width: rem-calc(28px);
+        }
+        .yr {
+          width: rem-calc(32px);
+        }
+      }
+      // Selected state
+      li {
+        &.selected {
+          a {
+            background: #aaaaaa image-url("_elements/icons/event/event_open_arrow.png") right center no-repeat;
+            color: white;
+          }
+          .event-type {
+            &.alert {
+              background-image: image-url("_elements/icons/event/status/alert-hover.png");
+            }
+          }
+        }
+      }
+    }
+  }
+}

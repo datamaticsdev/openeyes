@@ -19,7 +19,7 @@
 ?>
 
 <div class="title">
-	<strong>Select event to add to the <?php echo $subspecialty ? $subspecialty->name : 'Support services'?> episode:</strong>
+	<strong>Select event to add to the <?php echo $subspecialty ? (is_object($subspecialty) ? $subspecialty->name : $subspecialty) : 'Support services'?> episode:</strong>
 </div>
 <ul class="events">
 	<?php foreach ($eventTypes as $eventType) {
