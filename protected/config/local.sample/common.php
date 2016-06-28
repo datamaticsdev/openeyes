@@ -135,6 +135,8 @@ $config = array(
 		// 'dashboard_sortable' => true
 		'event_print_method' => 'pdf',
 		'wkhtmltopdf_nice_level' => 19,
+		// flag to switch the side bar navigation to a single episode
+		//'single_episode' => bool
 	),
 );
 
