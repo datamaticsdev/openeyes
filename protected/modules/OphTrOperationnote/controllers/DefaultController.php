@@ -25,6 +25,7 @@ class DefaultController extends BaseEventTypeController
 		'verifyProcedure' => self::ACTION_TYPE_FORM,
 		'getImage' => self::ACTION_TYPE_FORM,
 		'getTheatreOptions' => self::ACTION_TYPE_FORM,
+		'saveCataractDefaults' => self::ACTION_TYPE_FORM,
 	);
 
 	/* @var Element_OphTrOperationbooking_Operation operation that this note is for when creating */
@@ -976,5 +977,27 @@ class DefaultController extends BaseEventTypeController
 			$formatted .= ".0";
 		}
 		return $formatted;
+	}
+
+	public function actionSaveCataractDefaults(){
+
+		$defaultData = json_encode(Yii::app()->getRequest()->getPost("DefaultData"));
+		if($defaultData){
+			$defaultDataObj = $this->getCataractDefaults();
+			if(!$defaultDataObj) {
+				$defaultDataObj = new OphTrOperationnote_CataractDefaults();
+				$defaultDataObj->user_id = Yii::app()->user->id;
+				$defaultDataObj->firm_id = (int)Yii::app()->session['selected_firm_id'];
+			}
+			$defaultDataObj->defaults = $defaultData;
+			$defaultDataObj->save();
+		}
+		echo("Default settings has been saved.");
+	}
+
+	protected function getCataractDefaults(){
+		return OphTrOperationnote_CataractDefaults::model()->find(
+				'user_id = :user_id AND firm_id = :firm_id',
+				array(':user_id'=>Yii::app()->user->id, ':firm_id'=> (int)Yii::app()->session['selected_firm_id']));
 	}
 }

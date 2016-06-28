@@ -781,3 +781,40 @@ function highlightBiometryElement( ){
     }
 
 }
+
+function saveDefaultsCataract(){
+    console.log('saving defaults');
+    $.ajax({
+        'type': 'POST',
+        'url': baseUrl + '/OphTrOperationnote/Default/saveCataractDefaults',
+        'data': {
+            'DefaultData': {
+                'incision_site_id': $('#Element_OphTrOperationnote_Cataract_incision_site_id').val(),
+                'length': $('#Element_OphTrOperationnote_Cataract_length').val(),
+                'meridian': $('#Element_OphTrOperationnote_Cataract_meridian').val(),
+                'incision_type_id': $('#Element_OphTrOperationnote_Cataract_incision_type_id').val(),
+                'report': $('#Element_OphTrOperationnote_Cataract_report').val(),
+                'iol_type_id': $('#Element_OphTrOperationnote_Cataract_iol_type_id').val(),
+                'iol_power': $('#Element_OphTrOperationnote_Cataract_iol_power').val(),
+                'predicted_refraction': $('#Element_OphTrOperationnote_Cataract_predicted_refraction').val(),
+                'iol_position_id': $('#Element_OphTrOperationnote_Cataract_iol_position_id').val(),
+                'CataractOperativeDevices': getMultiselectValues("OphTrOperationnote_CataractOperativeDevices"),
+                'CataractComplications': getMultiselectValues("OphTrOperationnote_CataractComplications"),
+                'complication_notes': $('#Element_OphTrOperationnote_Cataract_complication_notes').val()
+            },
+            'YII_CSRF_TOKEN': YII_CSRF_TOKEN
+        },
+
+        'success': function(data){
+            $('#cataract_save_defaults').after('<div class="label">'+data+'</div>');
+        }
+    });
+}
+
+function getMultiselectValues(inputname) {
+    var output = [];
+    $('input[name="'+inputname+'[]"]').each(function(){
+        output.push($(this).val());
+    });
+    return output;
+}

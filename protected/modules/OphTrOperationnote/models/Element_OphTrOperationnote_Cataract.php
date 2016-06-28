@@ -164,6 +164,27 @@ class Element_OphTrOperationnote_Cataract extends Element_OnDemand
         if (Yii::app()->controller->selectedEyeForEyedraw->id == 1) {
             $this->meridian = 0;
         }
+        $defaultData = $this->getCataractDefaults();
+        if($defaultData) {
+            $savedDefaults = (array)json_decode($defaultData->defaults);
+            $this->setAttributes($savedDefaults);
+            $complications = array();
+            if (isset($savedDefaults['CataractComplications']) && is_array($savedDefaults['CataractComplications'])) {
+                foreach ($savedDefaults['CataractComplications'] as $c_id) {
+                    $complications[] = OphTrOperationnote_CataractComplications::model()->findByPk($c_id);
+                }
+            }
+            $this->complications = $complications;
+
+            $devices = array();
+            if (isset($savedDefaults['CataractOperativeDevices'])) {
+                foreach ($savedDefaults['CataractOperativeDevices'] as $oa_id) {
+                    $devices[] = OphTrOperationnote_CataractComplications::model()->findByPk($oa_id);
+                }
+            }
+            $this->operative_devices = $devices;
+
+        }
     }
 
     /**
@@ -354,5 +375,11 @@ class Element_OphTrOperationnote_Cataract extends Element_OnDemand
                 }
             }
         }
+    }
+
+    protected function getCataractDefaults(){
+        return OphTrOperationnote_CataractDefaults::model()->find(
+            'user_id = :user_id AND firm_id = :firm_id',
+            array(':user_id'=>Yii::app()->user->id, ':firm_id'=> (int)Yii::app()->session['selected_firm_id']));
     }
 }
