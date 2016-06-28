@@ -741,11 +741,13 @@ function glaucomaController(_drawing) {
 function loadBiometryElementData(){
     var $higlightedEye,
         predictedRefraction = '',
-        iolPower = '';
+        iolPower = '',
+        lensName = '';
 
     $higlightedEye = $('.highlighted-eye');
     predictedRefraction = $higlightedEye.find('.predictedRefraction').text();
     iolPower = $higlightedEye.find('.iolDisplay').text();
+    lensName = $higlightedEye.find('.lensDisplay').text();
 
     if(predictedRefraction &&  ($('#Element_OphTrOperationnote_Cataract_predicted_refraction').val() == "" ||  $('#Element_OphTrOperationnote_Cataract_predicted_refraction').val() == 0)){
         if(predictedRefraction == "None"){
@@ -761,6 +763,20 @@ function loadBiometryElementData(){
             $('#Element_OphTrOperationnote_Cataract_iol_power').val(iolPower);
         }
     }
+
+    if(lensName ){
+        $('#Element_OphTrOperationnote_Cataract_iol_type_id').val( searchLensName(lensName) );
+    }
+}
+
+function searchLensName(lensName){
+    var lensID = 0;
+    $('#Element_OphTrOperationnote_Cataract_iol_type_id option').each(function(){
+        if(lensName.toLowerCase().search($(this).text().toLowerCase()) != -1){
+            lensID = $(this).attr('value');
+        }
+    });
+    return lensID;
 }
 
 function highlightBiometryElement( ){

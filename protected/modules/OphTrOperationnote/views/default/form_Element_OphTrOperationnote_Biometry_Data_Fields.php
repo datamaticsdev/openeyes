@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="large-10 column end">
-            <div class="data-value iolDisplayHighlited"
+            <div class="data-value iolDisplayHighlited lensDisplay"
                  id="lens_<?php echo $side ?>"><?php echo $element->{'lens_' . $side} ? $element->{'lens_' . $side} : 'None' ?></div>
         </div>
     </div>
