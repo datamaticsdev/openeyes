@@ -18,7 +18,7 @@
  */
 ?>
 <div class="right">
-    <div id="cataract_save_defaults" name="save-defaults" class="button small">Save as defaults</div>
+    <div id="cataract_save_defaults" name="save-defaults" class="button small">Save as default settings</div>
 </div>
 <?php echo $form->dropDownList($element, 'incision_site_id', 'OphTrOperationnote_IncisionSite' ,array('empty'=>'- Please select -','textAttribute'=>'data-value'),false,array('field'=>4))?>
 <?php echo $form->textField($element, 'length', array(),array(),array_merge($form->layoutColumns,array('field'=>3)))?>
