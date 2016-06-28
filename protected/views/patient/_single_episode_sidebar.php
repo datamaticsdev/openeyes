@@ -27,13 +27,13 @@ if (is_array($ordered_episodes)) {
 
 
                 <?php foreach ($specialty_episodes['episodes'] as $i => $episode) {
-                    // TODO deal with support services possibly
+                    // TODO deal with support services possibly?
                     $id = $episode->getSubspecialtyID();
                     if (!array_key_exists($id, $subspecialty_labels)) {
                         $subspecialty_labels[$id] = $episode->subspecialty->name; ?>
 
                         <li class="subspecialty <?= $current_episode && $current_episode->getSubspecialtyID() == $id ? "selected" : ""; ?>"
-                            data-subspecialty-id="<?= $id ?>"><?= $episode->getSubspecialtyText() ?>
+                            data-subspecialty-id="<?= $id ?>"><?= CHtml::link($episode->getSubspecialtyText(), array('/patient/episode/' . $episode->id)) ?>
                             <span class="tag"><?= $episode->subspecialty ? $episode->subspecialty->ref_spec : 'Ss'; ?></span></li>
 
                     <?php }
@@ -41,8 +41,6 @@ if (is_array($ordered_episodes)) {
             </ol>
             <ol class="events">
                 <?php foreach ($specialty_episodes['episodes'] as $i => $episode) { ?>
-
-
                     <!-- Episode events -->
 
                     <?php foreach ($episode->events as $event) {
@@ -58,7 +56,9 @@ if (is_array($ordered_episodes)) {
 
                         $event_path = Yii::app()->createUrl($event->eventType->class_name . '/default/view') . '/';
                         ?>
-                        <li id="eventLi<?php echo $event->id ?>" class="<?php if ($highlight) { ?> selected<?php }?><?php if ($lowlight) { echo "lowlight"; }?>">
+                        <li id="eventLi<?php echo $event->id ?>"
+                            class="<?php if ($highlight) { ?> selected<?php }?><?php if ($lowlight) { echo "lowlight"; }?>"
+                            data-event-date="<?= $event->event_date ?>" data-created-date="<?= $event->created_date ?>">
 
                             <!-- Quicklook tooltip -->
                             <div class="tooltip quicklook" style="display: none; ">
