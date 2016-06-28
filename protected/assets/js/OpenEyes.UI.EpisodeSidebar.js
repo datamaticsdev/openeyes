@@ -15,9 +15,15 @@
  */
 
 (function(exports) {
-    'use strict';
-
-    function EpisodeSidebar(options) {
+    /**
+     * EpisodeSideBar constructor. The EpisodeSideBar manages the controls of the patient episode side bar when in single
+     * episode behaviour, managing the sorting and grouping of the patient events.
+     *
+     * @param options
+     * @constructor
+     */
+    function EpisodeSidebar(element, options) {
+        this.element = $(element);
         this.options = $.extend(true, {}, EpisodeSidebar._defaultOptions, options);
         this.create();
     }
@@ -26,12 +32,14 @@
         switch_firm_text: 'Please switch firm to add an event to this episode',
         subspecialty: null,
         event_button_selector: '#add-event',
-        subspecialty_labels: {}
+        subspecialty_labels: {},
+        event_list_selector: '.events li'
     };
 
     EpisodeSidebar.prototype.create = function() {
         var self = this;
         self.setSubspecialty(self.options.subspecialty);
+        self.orderEvents();
 
         $(document).on('click', self.options.event_button_selector + '.enabled', function() {
             self.openNewEventDialog();
@@ -69,7 +77,6 @@
     EpisodeSidebar.prototype.openNewEventDialog = function() {
         var self = this;
         if (!self.newEventDialog) {
-            console.log($('#add-new-event-template').html());
             self.newEventDialog = new OpenEyes.UI.Dialog({
                 destroyOnClose: false,
                 title: 'Add a new ' + self.getSubspecialtyLabel() + ' event',
@@ -83,6 +90,37 @@
 
         }
         self.newEventDialog.open();
+    };
+
+    EpisodeSidebar.prototype.orderEvents = function() {
+
+        var items = this.element.find(this.options.event_list_selector);
+        var parent = items.parent();
+
+        function dateSort(b, a) {
+            var edA = (new Date($(a).data('event-date'))).getTime();
+            var cdA = (new Date($(a).data('created-date'))).getTime();
+            var edB = (new Date($(b).data('event-date'))).getTime();
+            var cdB = (new Date($(b).data('created-date'))).getTime();
+            var ret = null;
+            // for some reason am unable to do a chained ternery operator for the comparison, hence the somewhat convoluted
+            // if statements to perform the comparison here.
+            if (edA === edB) {
+                if (cdA === cdB) {
+                    ret = 0;
+                }
+                else {
+                    ret = cdA < cdB ? -1 : 1;
+                }
+            }
+            else {
+                ret = edA < edB ? -1 : 1;
+            }
+            return ret;
+        }
+
+        var sorted = items.sort(dateSort);
+        parent.append(sorted);
     };
 
     exports.EpisodeSidebar = EpisodeSidebar;

@@ -21,11 +21,10 @@ $subspecialty_labels = array();
 
 if (is_array($ordered_episodes)) {
     foreach ($ordered_episodes as $specialty_episodes) { ?>
-        <div class="panel specialty">
+        <div class="panel specialty" id="specialty-panel-<?=$specialty_episodes['specialty']?>">
             <h3 class="specialty-title"><?php echo $specialty_episodes['specialty'] ?></h3>
+            <section class="panel">
             <ol class="subspecialties">
-
-
                 <?php foreach ($specialty_episodes['episodes'] as $i => $episode) {
                     // TODO deal with support services possibly?
                     $id = $episode->getSubspecialtyID();
@@ -91,6 +90,7 @@ if (is_array($ordered_episodes)) {
 
                 <?php } ?>
             </ol>
+            </section>
         </div>
     <?php }
 }?>
@@ -111,11 +111,13 @@ if (is_array($ordered_episodes)) {
 ?>
 <script type="text/javascript">
     $(document).ready(function() {
-        new OpenEyes.UI.EpisodeSidebar({
-            subspecialty: "<?= $episode->firm ? $episode->firm->getSubspecialtyID() : ''?>",
-            subspecialty_labels: {
-                <?= implode(",", $subspecialty_label_list); ?>
-            }
+        $('div.specialty').each(function() {
+            new OpenEyes.UI.EpisodeSidebar(this, {
+                subspecialty: "<?= $episode->firm ? $episode->firm->getSubspecialtyID() : ''?>",
+                subspecialty_labels: {
+                    <?= implode(",", $subspecialty_label_list); ?>
+                }
+            });
         });
 
         $('.sidebar.episodes-and-events .quicklook').each(function() {
