@@ -5610,6 +5610,11 @@ tfoot.pagination-container .pagination-view-all {
   background-color: lightgrey;
 }
 /* line 23, ../sass/openeyes/components/panels/_subspecialty.scss */
+.panel.specialty .grouping-picker {
+  margin-left: 5px;
+  width: inherit;
+}
+/* line 27, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events {
   -moz-border-radius-topleft: 0;
   -webkit-border-top-left-radius: 0;
@@ -5626,7 +5631,7 @@ tfoot.pagination-container .pagination-view-all {
   margin: 5px 0 0 0;
   padding: 4px 0 0 0;
 }
-/* line 34, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 38, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events a {
   -moz-border-radius: 0 6px 6px 0;
   -webkit-border-radius: 0;
@@ -5635,27 +5640,27 @@ tfoot.pagination-container .pagination-view-all {
   font-size: 0.8125rem;
   padding: 0 10px 0 2px;
 }
-/* line 39, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 43, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events a:hover {
   background: #3665ff url('../img/_elements/icons/event/event_open_arrow.png?1461854941') right center no-repeat;
   color: white;
 }
-/* line 44, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 48, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events li {
   white-space: nowrap;
   list-style: none;
   margin: 0 0 4px 0;
   position: relative;
 }
-/* line 50, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 54, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events li.lowlight a {
   color: grey;
 }
-/* line 52, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 56, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events li.lowlight a:hover {
   color: lightgrey;
 }
-/* line 57, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 61, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events li .tag {
   -moz-border-radius: 2px 2px 2px 2px;
   -webkit-border-radius: 2px;
@@ -5670,60 +5675,60 @@ tfoot.pagination-container .pagination-view-all {
   margin-top: -5%;
   margin-left: -2px;
 }
-/* line 70, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 74, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events .event-type {
   display: inline-block;
   width: 35px;
   background: url('../img/_elements/icons/event/status/quicklook.png?1461854941') right top no-repeat;
 }
-/* line 74, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 78, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events .event-type:hover {
   background-image: url('../img/_elements/icons/event/status/quicklook-hover.png?1461854941');
 }
-/* line 77, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 81, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events .event-type.alert {
   background-image: url('../img/_elements/icons/event/status/alert.png?1461854941');
 }
-/* line 79, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 83, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events .event-type.alert:hover {
   background-image: url('../img/_elements/icons/event/status/alert-hover.png?1461854941');
 }
-/* line 84, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 88, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events .ev_date {
   padding-left: 10px;
   background: url('../img/_elements/icons/event/small/datetime-past.png?1461854941') left center no-repeat;
 }
-/* line 88, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 92, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events .event-date {
   display: inline-block;
   padding-left: 10px;
 }
-/* line 91, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 95, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events .event-date .day,
 .panel.specialty ol.events .event-date .mth,
 .panel.specialty ol.events .event-date .yr {
   display: inline-block;
 }
-/* line 96, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 100, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events .event-date .day {
   width: 1.3125rem;
   text-align: right;
   padding-right: 4px;
 }
-/* line 101, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 105, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events .event-date .mth {
   width: 1.75rem;
 }
-/* line 104, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 108, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events .event-date .yr {
   width: 2rem;
 }
-/* line 111, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 115, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events li.selected a {
   background: #aaaaaa url('../img/_elements/icons/event/event_open_arrow.png?1461854941') right center no-repeat;
   color: white;
 }
-/* line 116, ../sass/openeyes/components/panels/_subspecialty.scss */
+/* line 120, ../sass/openeyes/components/panels/_subspecialty.scss */
 .panel.specialty ol.events li.selected .event-type.alert {
   background-image: url('../img/_elements/icons/event/status/alert-hover.png?1461854941');
 }

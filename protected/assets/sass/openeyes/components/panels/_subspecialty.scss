@@ -20,6 +20,10 @@
         background-color: lightgrey;
       }
     }
+    .grouping-picker {
+      margin-left: 5px;
+      width: inherit;
+    }
     ol.events {
       @include border-top-left-radius(0);
       @include border-bottom-left-radius(0);

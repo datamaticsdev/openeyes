@@ -57,7 +57,10 @@ if (is_array($ordered_episodes)) {
                         ?>
                         <li id="eventLi<?php echo $event->id ?>"
                             class="<?php if ($highlight) { ?> selected<?php }?><?php if ($lowlight) { echo "lowlight"; }?>"
-                            data-event-date="<?= $event->event_date ?>" data-created-date="<?= $event->created_date ?>">
+                            data-event-date="<?= $event->event_date ?>" data-created-date="<?= $event->created_date ?>"
+                            data-event-date-display="<?= $event->NHSDate('event_date') ?>"
+                            data-event-type="<?= $event->eventType->name ?>"
+                            data-subspecialty="<?= $episode->subspecialty->name ?>">
 
                             <!-- Quicklook tooltip -->
                             <div class="tooltip quicklook" style="display: none; ">
@@ -69,17 +72,17 @@ if (is_array($ordered_episodes)) {
                             </div>
 
                             <a href="<?php echo $event_path . $event->id ?>" data-id="<?php echo $event->id ?>">
-											<span class="event-type<?php if ($event->hasIssue()) { ?> alert<?php } ?>">
-												<?php
-                                                if (file_exists(Yii::getPathOfAlias('application.modules.' . $event->eventType->class_name . '.assets'))) {
-                                                    $assetpath = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.modules.' . $event->eventType->class_name . '.assets')) . '/';
-                                                } else {
-                                                    $assetpath = '/assets/';
-                                                }
-                                                ?>
-                                                <img src="<?php echo $assetpath . 'img/small.png' ?>" alt="op"
-                                                     width="19" height="19"/>
-											</span>
+                                    <span class="event-type<?php if ($event->hasIssue()) { ?> alert<?php } ?>">
+                                        <?php
+                                        if (file_exists(Yii::getPathOfAlias('application.modules.' . $event->eventType->class_name . '.assets'))) {
+                                            $assetpath = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.modules.' . $event->eventType->class_name . '.assets')) . '/';
+                                        } else {
+                                            $assetpath = '/assets/';
+                                        }
+                                        ?>
+                                        <img src="<?php echo $assetpath . 'img/small.png' ?>" alt="op"
+                                             width="19" height="19"/>
+                                    </span>
                                 <span
                                     class="event-date <?php echo ($event->isEventDateDifferentFromCreated()) ? ' ev_date' : '' ?>"> <?php echo $event->event_date ? $event->NHSDateAsHTML('event_date') : $event->NHSDateAsHTML('created_date'); ?></span>
                                 <span class="tag"><?= $event->episode->subspecialty ? $event->episode->subspecialty->ref_spec : 'Ss'; ?></span>
