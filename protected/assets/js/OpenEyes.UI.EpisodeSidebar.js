@@ -37,7 +37,7 @@
 
     EpisodeSidebar._defaultOptions = {
         switch_firm_text: 'Please switch firm to add an event to this episode',
-        subspecialty: null,
+        user_subspecialty: null,
         event_button_selector: '#add-event',
         subspecialty_labels: {},
         event_list_selector: '.events li',
@@ -46,25 +46,17 @@
 
     EpisodeSidebar.prototype.create = function() {
         var self = this;
-        self.setSubspecialty(self.options.subspecialty);
+        self.subspecialty = self.options.user_subspecialty;
         self.orderEvents();
         self.addGroupingPicker();
 
+        $(self.options.event_button_selector).unbind();
+
         $(document).on('click', self.options.event_button_selector + '.enabled', function() {
-            self.openNewEventDialog();
+            if (self.subspecialty)
+                self.openNewEventDialog();
         });
 
-    };
-
-    EpisodeSidebar.prototype.setSubspecialty = function(subspecialty) {
-        this.subspecialty = subspecialty;
-        if (this.subspecialty && this.subspecialty == this.options.subspecialty) {
-            // something selected, and matches the current session subspecialty.
-            this.enableEventButton();
-        }
-        else {
-            this.disableEventButton();
-        }
     };
 
     EpisodeSidebar.prototype.getSubspecialtyLabel = function() {
@@ -74,14 +66,6 @@
         else {
             return "Support services"
         }
-    };
-
-    EpisodeSidebar.prototype.enableEventButton = function() {
-        $(this.options.event_button_selector).removeClass('disabled').addClass('enabled');
-    };
-
-    EpisodeSidebar.prototype.disableEventButton = function() {
-        $(this.options.event_button_selector).removeClass('enabled').addClass('disabled');
     };
 
     EpisodeSidebar.prototype.openNewEventDialog = function() {

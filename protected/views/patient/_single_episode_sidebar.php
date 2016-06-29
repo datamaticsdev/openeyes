@@ -4,7 +4,7 @@
         Episode
     </button>
     <button
-        class="secondary tiny add-event addEvent"
+        class="secondary tiny add-event addEvent <?= $current_episode->getSubspecialtyID() == $this->firm->getSubspecialtyID() ? "enabled" : "disabled"?>"
         type="button"
         id="add-event"
         data-attr-subspecialty-id="<?= $this->firm->getSubspecialtyID();?>">
@@ -142,7 +142,7 @@ if (is_array($ordered_episodes)) {
     $(document).ready(function() {
         $('div.specialty').each(function() {
             new OpenEyes.UI.EpisodeSidebar(this, {
-                subspecialty: "<?= $episode->firm ? $episode->firm->getSubspecialtyID() : ''?>",
+                user_subspecialty: <?= $this->firm->getSubspecialtyID() ?>,
                 subspecialty_labels: {
                     <?= implode(",", $subspecialty_label_list); ?>
                 }
