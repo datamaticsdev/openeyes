@@ -146,6 +146,19 @@
         self.element.on('change', '.' + self.options.grouping_picker_class, function() {
             self.updateGrouping();
         });
+
+        self.element.on('click', '.sorting-order', function(e) {
+            if ($(e.target).hasClass('fa-sort-asc')) {
+                self.sortOrder = 'asc';
+                $(e.target).removeClass('fa-sort-asc').addClass('fa-sort-desc');
+            }
+            else {
+                self.sortOrder = 'desc';
+                $(e.target).removeClass('fa-sort-desc').addClass('fa-sort-asc');
+            }
+
+            self.updateGrouping();
+        });
     }
 
     EpisodeSidebar.prototype.getGroupingPicker = function() {
@@ -161,7 +174,9 @@
     };
 
     EpisodeSidebar.prototype.getListControls = function() {
-        var controls = '<div class="list-controls"><a href="#" class="collapse-all">collapse all</a> | <a href="#" class="expand-all">expand all</a></div>';
+        var controls = '<div class="list-controls"><a href="#" class="collapse-all">collapse all</a> | <a href="#" class="expand-all">expand all</a>';
+        controls += '<span style="float: right;"><span class="sorting-order fa fa-sort-asc"></span></span>';
+        controls += '</div>';
         return controls;
     };
 
