@@ -13,8 +13,25 @@
     </button>
 <?php }?>
 
-<!-- Legacy events -->
-<?php $this->renderPartial('//patient/_legacy_events',array('legacyepisodes'=>$legacyepisodes))?>
+
+<?php
+// flatten the data structure to include legacy events into the core navigation. Note here we are
+// simply assuming that the first entry will be Ophthalmology specialty (for the purposes of this PoC
+// we don't anticipate events from any other specialty)
+if (count($legacyepisodes)) {
+    if (!is_array($ordered_episodes) || empty($ordered_episodes)) {
+        $ordered_episodes = array(
+            array('specialty' => 'Ophthalmology',
+                'episodes' => array()
+            )
+        );
+    }
+    foreach ($legacyepisodes as $le) {
+        $ordered_episodes[0]['episodes'][] = $le;
+    }
+}
+//$this->renderPartial('//patient/_legacy_events',array('legacyepisodes'=>$legacyepisodes))
+?>
 
 <?php
 $subspecialty_labels = array();
@@ -28,12 +45,21 @@ if (is_array($ordered_episodes)) {
                 <?php foreach ($specialty_episodes['episodes'] as $i => $episode) {
                     // TODO deal with support services possibly?
                     $id = $episode->getSubspecialtyID();
+                    $subspecialty_name = $episode->getSubspecialtyText();
+                    if (!$id) {
+                        $id = "Le";
+                        $tag = $id;
+                    }
+                    else {
+                        $tag = $episode->subspecialty ? $episode->subspecialty->ref_spec : 'Ss';
+                    }
+
                     if (!array_key_exists($id, $subspecialty_labels)) {
-                        $subspecialty_labels[$id] = $episode->subspecialty->name; ?>
+                        $subspecialty_labels[$id] = $subspecialty_name; ?>
 
                         <li class="subspecialty <?= $current_episode && $current_episode->getSubspecialtyID() == $id ? "selected" : ""; ?>"
-                            data-subspecialty-id="<?= $id ?>"><?= CHtml::link($episode->getSubspecialtyText(), array('/patient/episode/' . $episode->id)) ?>
-                            <span class="tag"><?= $episode->subspecialty ? $episode->subspecialty->ref_spec : 'Ss'; ?></span></li>
+                            data-subspecialty-id="<?= $id ?>"><?= CHtml::link($subspecialty_name, array('/patient/episode/' . $episode->id)) ?>
+                            <span class="tag"><?= $tag ?></span></li>
 
                     <?php }
                 } ?>
@@ -60,7 +86,7 @@ if (is_array($ordered_episodes)) {
                             data-event-date="<?= $event->event_date ?>" data-created-date="<?= $event->created_date ?>"
                             data-event-date-display="<?= $event->NHSDate('event_date') ?>"
                             data-event-type="<?= $event->eventType->name ?>"
-                            data-subspecialty="<?= $episode->subspecialty->name ?>">
+                            data-subspecialty="<?= $subspecialty_name ?>">
 
                             <!-- Quicklook tooltip -->
                             <div class="tooltip quicklook" style="display: none; ">
@@ -85,7 +111,7 @@ if (is_array($ordered_episodes)) {
                                     </span>
                                 <span
                                     class="event-date <?php echo ($event->isEventDateDifferentFromCreated()) ? ' ev_date' : '' ?>"> <?php echo $event->event_date ? $event->NHSDateAsHTML('event_date') : $event->NHSDateAsHTML('created_date'); ?></span>
-                                <span class="tag"><?= $event->episode->subspecialty ? $event->episode->subspecialty->ref_spec : 'Ss'; ?></span>
+                                <span class="tag"><?= $tag ?></span>
                             </a>
 
                         </li>
