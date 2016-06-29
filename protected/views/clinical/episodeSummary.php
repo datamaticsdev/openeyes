@@ -32,7 +32,7 @@ if (!empty($episode)) {
 
 	<div class="element-data">
 		<h2>Summary</h2>
-		<h3><?php echo $episode->support_services ? 'Support services' : $episode->firm->getSubspecialtyText()?></h3>
+		<h3><?php echo $episode->support_services ? 'Support services' : $episode->getSubspecialtyText()?></h3>
 	</div>
 
 	<?php $this->renderPartial('//base/_messages'); ?>
@@ -186,7 +186,7 @@ if (!empty($episode)) {
 			<div class="large-6 column">
 				<h3 class="data-title">Subspecialty:</h3>
 				<div class="data-value">
-					<?php echo $episode->support_services ? 'Support services' : $episode->firm->getSubspecialtyText()?>
+					<?php echo $episode->support_services ? 'Support services' : $episode->getSubspecialtyText()?>
 				</div>
 			</div>
 			<div class="large-6 column">
@@ -198,7 +198,7 @@ if (!empty($episode)) {
 
 	<div class="metadata">
 		<span class="info">
-			<?php echo $episode->support_services ? 'Support services' : $episode->firm->getSubspecialtyText()?>: created by <span class="user"><?php echo $episode->user->fullName?></span>
+			<?php echo $episode->support_services ? 'Support services' : $episode->getSubspecialtyText()?>: created by <span class="user"><?php echo $episode->user->fullName?></span>
 			on <?php echo $episode->NHSDate('created_date')?> at <?php echo substr($episode->created_date,11,5)?>
 		</span>
 	</div>
