@@ -74,9 +74,9 @@ if (is_array($ordered_episodes)) {
                         else {
                             $tag = "Le";
                         }
+                        $subspecialty_name = $episode->getSubspecialtyText();
                     ?>
                     <?php foreach ($episode->events as $event) {
-
                         $highlight = false;
                         $lowlight = true;
 
