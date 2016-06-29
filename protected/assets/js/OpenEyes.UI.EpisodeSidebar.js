@@ -33,7 +33,7 @@
         {id: 'event-date-display', label: 'Date'},
         {id: 'event-type', label: 'Type'},
         {id: 'subspecialty', label: 'Subspecialty'}
-    ]
+    ];
 
     EpisodeSidebar._defaultOptions = {
         switch_firm_text: 'Please switch firm to add an event to this episode',
@@ -41,14 +41,24 @@
         event_button_selector: '#add-event',
         subspecialty_labels: {},
         event_list_selector: '.events li',
-        grouping_picker_class: 'grouping-picker'
+        grouping_picker_class: 'grouping-picker',
+        default_sort: 'desc'
     };
 
     EpisodeSidebar.prototype.create = function() {
         var self = this;
         self.subspecialty = self.options.user_subspecialty;
-        self.orderEvents();
-        self.addGroupingPicker();
+        if (self.options.default_sort == 'asc') {
+            self.sortOrder = 'asc';
+        }
+        else {
+            self.sortOrder = 'desc';
+        }
+        self.lastSort = null;
+
+        self.addControls();
+
+        self.updateGrouping();
 
         $(self.options.event_button_selector).unbind();
 
@@ -87,6 +97,10 @@
     };
 
     EpisodeSidebar.prototype.orderEvents = function() {
+        var self = this;
+        if (self.lastSort == self.sortOrder)
+            return;
+
         var items = this.element.find(this.options.event_list_selector);
         var parent = items.parent();
 
@@ -111,12 +125,30 @@
             }
             return ret;
         }
-
         var sorted = items.sort(dateSort);
+
+        if (self.sortOrder == 'asc')
+            sorted = sorted.get().reverse();
+
+        self.lastSort = self.sortOrder;
+
         parent.append(sorted);
     };
 
-    EpisodeSidebar.prototype.addGroupingPicker = function() {
+    EpisodeSidebar.prototype.addControls = function() {
+        var self = this;
+        var controls = '';
+        controls += self.getGroupingPicker();
+        controls += self.getListControls();
+
+        $(controls).insertBefore(self.element.find(self.options.event_list_selector).parent());
+
+        self.element.on('change', '.' + self.options.grouping_picker_class, function() {
+            self.updateGrouping();
+        });
+    }
+
+    EpisodeSidebar.prototype.getGroupingPicker = function() {
         var self = this;
         var select = '<span style="white-space: nowrap;"><label for="grouping-picker" style="display: inline;">Grp by:</label>';
         select += '<select name="grouping-picker" class="' + self.options.grouping_picker_class + '">';
@@ -125,15 +157,17 @@
         });
         select += '</select></span>';
 
-        $(select).insertBefore(self.element.find(self.options.event_list_selector).parent());
+        return select;
+    };
 
-        self.element.on('change', '.' + self.options.grouping_picker_class, function() {
-            self.updateGrouping();
-        });
+    EpisodeSidebar.prototype.getListControls = function() {
+        var controls = '<div class="list-controls"><a href="#" class="collapse-all">collapse all</a> | <a href="#" class="expand-all">expand all</a></div>';
+        return controls;
     };
 
     EpisodeSidebar.prototype.resetGrouping = function() {
         this.element.find('.grouping-container').remove();
+        this.orderEvents();
         this.element.find(this.options.event_list_selector).parent().show();
     };
 
