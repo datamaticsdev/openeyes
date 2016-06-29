@@ -67,8 +67,16 @@ if (is_array($ordered_episodes)) {
             <ol class="events">
                 <?php foreach ($specialty_episodes['episodes'] as $i => $episode) { ?>
                     <!-- Episode events -->
-
+                    <?php
+                        if ($episode->subspecialty) {
+                            $tag = $episode->subspecialty ? $episode->subspecialty->ref_spec : 'Ss';
+                        }
+                        else {
+                            $tag = "Le";
+                        }
+                    ?>
                     <?php foreach ($episode->events as $event) {
+
                         $highlight = false;
                         $lowlight = true;
 
