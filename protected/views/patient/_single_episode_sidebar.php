@@ -4,7 +4,7 @@
         Episode
     </button>
     <button
-        class="secondary tiny add-event addEvent <?= $current_episode->getSubspecialtyID() == $this->firm->getSubspecialtyID() ? "enabled" : "disabled"?>"
+        class="secondary tiny add-event addEvent <?= $current_episode && $current_episode->getSubspecialtyID() == $this->firm->getSubspecialtyID() ? "enabled" : "disabled"?>"
         type="button"
         id="add-event"
         data-attr-subspecialty-id="<?= $this->firm->getSubspecialtyID();?>">
