@@ -45,6 +45,34 @@
         default_sort: 'desc'
     };
 
+    var sidebarCookiePrefix = 'oe-sidebar-state-';
+
+    EpisodeSidebar.prototype.loadState = function() {
+        var self = this;
+        var original = $.cookie.json;
+        $.cookie.json = true;
+        var state = $.cookie(sidebarCookiePrefix + self.element.attr('id'));
+        $.cookie.json = original;
+        if (state) {
+            if (state.sortOrder)
+                self.sortOrder = state.sortOrder;
+            if (state.grouping)
+                self.grouping = state.grouping;
+        }
+    };
+
+    EpisodeSidebar.prototype.saveState = function() {
+        var self = this;
+        var state = {
+            sortOrder: self.sortOrder,
+            grouping: self.grouping
+        };
+        var original = $.cookie.json;
+        $.cookie.json = true;
+        $.cookie(sidebarCookiePrefix + self.element.attr('id'), state);
+        $.cookie.json = original;
+    };
+
     EpisodeSidebar.prototype.create = function() {
         var self = this;
         self.subspecialty = self.options.user_subspecialty;
@@ -54,7 +82,12 @@
         else {
             self.sortOrder = 'desc';
         }
+        self.grouping = {
+            id: groupings[0].id
+        };
+
         self.lastSort = null;
+        self.loadState();
 
         self.addControls();
 
@@ -162,8 +195,11 @@
 
         $(controls).insertBefore(self.element.find(self.options.event_list_selector).parent());
 
-        self.element.on('change', '.' + self.options.grouping_picker_class, function() {
+        self.element.on('change', '.' + self.options.grouping_picker_class, function(e) {
+            self.grouping.id = $(e.target).val();
+            self.grouping.state = null;
             self.updateGrouping();
+            self.saveState();
         });
 
         self.element.on('click', '.sorting-order', function(e) {
@@ -177,6 +213,7 @@
             }
 
             self.updateGrouping();
+            self.saveState();
         });
     }
 
@@ -185,7 +222,10 @@
         var select = '<span style="white-space: nowrap;"><label for="grouping-picker" style="display: inline;">Grp by:</label>';
         select += '<select name="grouping-picker" class="' + self.options.grouping_picker_class + '">';
         $(groupings).each(function() {
-            select += '<option value="' + this.id +'">' + this.label + '</option>';
+            select += '<option value="' + this.id +'"';
+            if (self.grouping && self.grouping.id == this.id)
+                select += ' selected';
+            select += '>' + this.label + '</option>';
         });
         select += '</select></span>';
 
@@ -207,18 +247,16 @@
 
     EpisodeSidebar.prototype.updateGrouping = function() {
         var self = this;
-        var groupingId = self.element.find('.' + self.options.grouping_picker_class).val();
-
         self.resetGrouping();
-        if (groupingId == 'none')
+        if (self.grouping.id == 'none')
             return;
 
         itemsByGrouping = {};
         groupingVals = [];
         self.element.find(self.options.event_list_selector).each(function() {
-            var groupingVal = $(this).data(groupingId);
+            var groupingVal = $(this).data(self.grouping.id);
             if (!groupingVal) {
-                console.log('ERROR: missing grouping data attribute ' + groupingId);
+                console.log('ERROR: missing grouping data attribute ' + self.grouping.id);
             }
             else {
                 if (!itemsByGrouping[groupingVal]) {
@@ -233,8 +271,12 @@
 
         var groupingElements = '';
         $(groupingVals).each(function() {
-            var grouping = '<div class="grouping-container"><h3>'+this+' <span style="float:right"><span class="grouping-expand fa fa-plus-square"></span> <span class="grouping-collapse fa fa-minus-square"></span></span></h3>';
-                        grouping += '<ol class="events">';
+            var grouping = '<div class="grouping-container" data-grouping-val="' + this + '">' +
+                '<h3>'+this+'<span style="float:right">' +
+                '<span class="grouping-expand fa fa-plus-square"></span> ' +
+                '<span class="grouping-collapse fa fa-minus-square"></span></span></h3>' +
+                '<ol class="events">';
+
             $(itemsByGrouping[this]).each(function() {
                 grouping += $(this).prop('outerHTML');
             });
@@ -244,27 +286,75 @@
 
         $(groupingElements).insertAfter(self.element.find(this.options.event_list_selector).parent());
         self.element.find(this.options.event_list_selector).parent().hide();
-        self.expandAll();
+        // TODO: here we should expand or collapse based on current state
+        self.processGroupingState();
+
     };
 
-    EpisodeSidebar.prototype.expandGrouping = function(element) {
+    EpisodeSidebar.prototype.setGroupingState = function(groupingValue, state) {
+        if (this.grouping.state == undefined)
+            this.grouping.state = {};
+        this.grouping.state[groupingValue] = state;
+    };
+
+    EpisodeSidebar.prototype.expandGrouping = function(element, saveState) {
+        var self = this;
+        if (saveState == undefined)
+            saveState = true;
+
         element.find('.grouping-expand').hide();
         element.find('ol.events').show();
         element.find('.grouping-collapse').show();
+
+        element.each(function() {
+            self.setGroupingState($(this).data('grouping-val'),'expand');
+        });
+
+        if (saveState)
+            this.saveState();
     };
 
-    EpisodeSidebar.prototype.collapseGrouping = function(element) {
+    EpisodeSidebar.prototype.collapseGrouping = function(element, saveState) {
+        var self = this;
+        if (saveState == undefined)
+            saveState = true;
+
         element.find('.grouping-collapse').hide();
         element.find('ol.events').hide();
         element.find('.grouping-expand').show();
+        element.each(function() {
+            self.setGroupingState($(this).data('grouping-val'), 'collapse');
+        });
+
+        if (saveState)
+            this.saveState();
     };
 
     EpisodeSidebar.prototype.expandAll = function() {
-        this.expandGrouping(this.element.find('.grouping-container'));
+        this.expandGrouping(this.element.find('.grouping-container'), false);
+        this.saveState();
     };
 
     EpisodeSidebar.prototype.collapseAll = function() {
-        this.collapseGrouping(this.element.find('.grouping-container'));
+        this.collapseGrouping(this.element.find('.grouping-container'), false);
+        this.saveState();
+    };
+    //TODO: loading is not working, need to verify where we're at!!
+    EpisodeSidebar.prototype.processGroupingState = function() {
+        var self = this;
+        if (self.grouping.state == undefined) {
+            self.expandAll();
+        }
+        else {
+            self.element.find('.grouping-container').each(function () {
+                if (self.grouping.state[$(this).data('grouping-val')] == 'collapse') {
+                    self.collapseGrouping($(this), false);
+                }
+                else {
+                    self.expandGrouping($(this), false);
+                }
+            });
+        }
     };
 
     exports.EpisodeSidebar = EpisodeSidebar;
