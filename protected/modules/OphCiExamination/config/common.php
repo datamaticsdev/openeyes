@@ -40,5 +40,12 @@ return array(
         ),
         'ophciexamination_drgrading_type_required' => false,
         'ophciexamination_visualacuity_correspondence_unit' => 'Snellen Metre',
+        'eyedraw_elements' => array(
+            'OphCiExamination' => array(
+                'OEModule\OphCiExamination\models\Element_OphCiExamination_AnteriorSegment' => array(
+                    'PCIOL',
+                )
+            )
+        )
     ),
 );

@@ -24,6 +24,15 @@ return array(
 			'ACIOL',
 			'ToricPCIOL',
 		),
+		'eyedraw_elements' => array(
+			'OphTrOperationnote' => array(
+				'Element_OphTrOperationNote_Cataract' => array(
+					'PCIOL',
+					'ACIOL',
+					'ToricPCIOL',
+				)
+			)
+		),
 		'admin_menu' => array(
 			'Per Op Instructions' => '/OphTrOperationnote/admin/postOpInstructions',
 			'Default Incision Length' => '/OphTrOperationnote/admin/viewIncisionLengthDefaults',

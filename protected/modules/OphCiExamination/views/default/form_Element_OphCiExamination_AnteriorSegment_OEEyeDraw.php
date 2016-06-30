@@ -18,6 +18,17 @@
  */
 ?>
 <?php
+$preload = Yii::app()->moduleAPI->getPatientEyedrawDoodles($this->patient, $side, array('PCIOL'));
+
+$onreadycommand = array(
+    array('addDoodle', array('AntSeg')),
+    array('deselectDoodles', array()),
+);
+
+if (count($preload)) {
+    $onreadycommand[] = array('loadAdditional', $preload);
+}
+
 $this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
     'doodleToolBarArray' => array(
         array('NuclearCataract', 'CorticalCataract', 'PostSubcapCataract', 'PCIOL', 'ACIOL', 'Bleb', 'PI',
@@ -27,10 +38,7 @@ $this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
         array('TrabySuture', 'Supramid', 'TubeLigation', 'CornealSuture', 'TrabyFlap', 'SidePort', 'Patch',
             'ConjunctivalSuture', 'ACMaintainer', 'Tube', 'TubeExtender')
     ),
-    'onReadyCommandArray' => array(
-        array('addDoodle', array('AntSeg')),
-        array('deselectDoodles', array()),
-    ),
+    'onReadyCommandArray' => $onreadycommand,
     'bindingArray' => array(
         'NuclearCataract' => array(
             'grade' => array('id' => 'OEModule_OphCiExamination_models_Element_OphCiExamination_AnteriorSegment_'.$side.'_nuclear_id', 'attribute' => 'data-value'),

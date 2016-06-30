@@ -65,4 +65,74 @@ class ModuleAPI extends CApplicationComponent
 		}
 		return @$this->_module_class_map[$class_name];
 	}
+
+	/**
+	 * This is almost certainly not in the correct place for this.
+	 *
+	 * @param Patient $patient
+	 * @param $side
+	 * @param array $doodles
+	 * @return array|null
+	 */
+	public function getPatientEyedrawDoodles(Patient $patient, $side, $doodles = array())
+	{
+		$elements_by_event_type_id = array();
+
+		// build a list of relevant event types for the requested doodles
+		foreach (Yii::app()->params['eyedraw_elements'] as $module_name => $elements) {
+			foreach ($elements as $element_cls => $element_doodles) {
+				$et_id = null;
+				$elements_for_event_type = array();
+				if (array_intersect($doodles, $element_doodles)) {
+					if (!count($elements_for_event_type)) {
+						if ($et = EventType::model()->find('class_name = ?', array($module_name)) ) {
+							$et_id = $et->id;
+						}
+						else {
+							break;
+						}
+						$elements_for_event_type[] = $element_cls;
+					}
+				}
+				$elements_by_event_type_id[$et_id] = $elements_for_event_type;
+			}
+
+		}
+
+		if (!count($elements_by_event_type_id))
+			return null;
+
+
+		$criteria = new CDbCriteria();
+		$criteria->addInCondition('event_type_id', array_keys($elements_by_event_type_id));
+		$criteria->compare('episode.patient_id', $patient->id);
+		$criteria->order = 't.event_date desc, t.created_date desc';
+
+		$result = array();
+
+		// iterate through the relevant events for the requested doodles, and check the elements defined
+		// for those events for the given doodles. As each doodle is found, it's removed from the search
+		// to ensure we only get the most recent definition of the doodle in this search.
+		// TODO: Change this behaviour so that all doodles available on a given element are removed (if the doodle isn't
+		// present in a newer element, you wouldn't want to load it from an older one)
+		foreach (Event::model()->with(array('episode', 'episode.patient'))->findAll($criteria) as $event) {
+			foreach ($elements_by_event_type_id[$event->event_type_id] as $model) {
+				if ($element = $model::model()->find('event_id=?', array($event->id))) {
+					if (!$element->{"has" . ucfirst($side)}())
+						continue;
+
+					$eyedraw = json_decode($element->{strtolower($side) . '_eyedraw'});
+					foreach ($eyedraw as $ed) {
+						$idx = array_search($ed->subclass, $doodles);
+						if ($idx !== false) {
+							$result[] = $ed;
+							unset($doodles[$idx]);
+						}
+					}
+				}
+			}
+		}
+
+		return $result;
+	}
 }

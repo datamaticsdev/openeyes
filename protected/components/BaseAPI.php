@@ -115,4 +115,42 @@ class BaseAPI
 
 		return false;
 	}
+
+	/**
+	 * @param Patient $patient
+	 * @param $side
+	 * @param array $doodles
+	 * @return array|bool|null
+	 * @throws Exception
+	 */
+	public function getDoodles(Patient $patient, $side, $doodles = array()) {
+		if (!count($this->doodle_elements))
+			return null;
+
+		$event_type = $this->getEventType();
+
+		$criteria = new CDbCriteria();
+		$criteria->compare('event_type_id', $event_type->id);
+		$criteria->compare('episode.patient_id', $patient->id);
+		$criteria->order = 't.event_date desc, t.created_date desc';
+
+		foreach (Event::model()->with(array('episode', 'episode.patient'))->findAll($criteria) as $event) {
+			foreach ($this->doodle_elements as $model) {
+				if ($element = $model::model()->find('event_id=?', array($event->id))) {
+					if (!$element->{"has" . ucfirst($side)}())
+						continue;
+
+					$eyedraw = json_decode($element->{strtolower($side) . '_eyedraw'});
+					$result = array();
+					foreach ($eyedraw as $ed) {
+						if (in_array($ed['subclass'], $doodles)) {
+							$result[] = $ed;
+						}
+					}
+					return $result;
+				}
+			}
+		}
+		return false;
+	}
 }
