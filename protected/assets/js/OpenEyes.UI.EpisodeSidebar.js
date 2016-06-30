@@ -67,6 +67,25 @@
                 self.openNewEventDialog();
         });
 
+        self.element.on('click', '.collapse-all', function(e) {
+            self.collapseAll();
+            e.preventDefault();
+        });
+
+        self.element.on('click', '.expand-all', function(e) {
+            self.expandAll();
+            e.preventDefault();
+        });
+
+        self.element.on('click', '.grouping-collapse', function(e) {
+            self.collapseGrouping($(e.target).parents('.grouping-container'));
+            e.preventDefault();
+        });
+
+        self.element.on('click', '.grouping-expand', function(e) {
+            self.expandGrouping($(e.target).parents('.grouping-container'));
+            e.preventDefault();
+        });
     };
 
     EpisodeSidebar.prototype.getSubspecialtyLabel = function() {
@@ -214,7 +233,8 @@
 
         var groupingElements = '';
         $(groupingVals).each(function() {
-            var grouping = '<div class="grouping-container"><h3>'+this+'</h3><ol class="events">';
+            var grouping = '<div class="grouping-container"><h3>'+this+' <span style="float:right"><span class="grouping-expand fa fa-plus-square"></span> <span class="grouping-collapse fa fa-minus-square"></span></span></h3>';
+                        grouping += '<ol class="events">';
             $(itemsByGrouping[this]).each(function() {
                 grouping += $(this).prop('outerHTML');
             });
@@ -224,8 +244,27 @@
 
         $(groupingElements).insertAfter(self.element.find(this.options.event_list_selector).parent());
         self.element.find(this.options.event_list_selector).parent().hide();
-        self.element.find('.grouping-container ol.events').show();
+        self.expandAll();
+    };
 
+    EpisodeSidebar.prototype.expandGrouping = function(element) {
+        element.find('.grouping-expand').hide();
+        element.find('ol.events').show();
+        element.find('.grouping-collapse').show();
+    };
+
+    EpisodeSidebar.prototype.collapseGrouping = function(element) {
+        element.find('.grouping-collapse').hide();
+        element.find('ol.events').hide();
+        element.find('.grouping-expand').show();
+    };
+
+    EpisodeSidebar.prototype.expandAll = function() {
+        this.expandGrouping(this.element.find('.grouping-container'));
+    };
+
+    EpisodeSidebar.prototype.collapseAll = function() {
+        this.collapseGrouping(this.element.find('.grouping-container'));
     };
 
     exports.EpisodeSidebar = EpisodeSidebar;

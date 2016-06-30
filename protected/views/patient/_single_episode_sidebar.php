@@ -30,7 +30,6 @@ if (count($legacyepisodes)) {
         $ordered_episodes[0]['episodes'][] = $le;
     }
 }
-//$this->renderPartial('//patient/_legacy_events',array('legacyepisodes'=>$legacyepisodes))
 ?>
 
 <?php
