@@ -18,7 +18,7 @@
  */
 ?>
 <?php
-$preload = Yii::app()->moduleAPI->getPatientEyedrawDoodles($this->patient, $side, array('PCIOL'));
+$preload = Yii::app()->moduleAPI->getPatientEyedrawDoodles($this->patient, $side, array('PCIOL', 'ACIOL', 'ToricPCIOL'));
 
 $onreadycommand = array(
     array('addDoodle', array('AntSeg')),

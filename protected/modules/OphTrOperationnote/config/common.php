@@ -26,7 +26,7 @@ return array(
 		),
 		'eyedraw_elements' => array(
 			'OphTrOperationnote' => array(
-				'Element_OphTrOperationNote_Cataract' => array(
+				'Element_OphTrOperationnote_Cataract' => array(
 					'PCIOL',
 					'ACIOL',
 					'ToricPCIOL',

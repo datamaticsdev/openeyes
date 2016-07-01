@@ -44,6 +44,8 @@ return array(
             'OphCiExamination' => array(
                 'OEModule\OphCiExamination\models\Element_OphCiExamination_AnteriorSegment' => array(
                     'PCIOL',
+                    'ACIOL',
+                    'ToricPCIOL'
                 )
             )
         )
