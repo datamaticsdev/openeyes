@@ -52,6 +52,16 @@ class Element_OphTrOperationnote_ProcedureList extends Element_OpNote
 		return 'et_ophtroperationnote_procedurelist';
 	}
 
+	public function hasLeft()
+	{
+		return $this->eye_id == Eye::LEFT;
+	}
+
+	public function hasRight()
+	{
+		return $this->eye_id == Eye::RIGHT;
+	}
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */
