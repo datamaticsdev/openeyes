@@ -128,14 +128,21 @@ class DefaultController extends BaseEventTypeController
 	 *
 	 * @throws Exception
 	 */
-	public function actionGetMacroData()
+	public function actionGetMacroData($patient_id, $macro_id)
 	{
-		if (!$patient = Patient::model()->findByPk(@$_GET['patient_id'])) {
-			throw new Exception('Patient not found: '.@$_GET['patient_id']);
+		if(!$patient_id){
+			$patient_id = @$_GET['patient_id'];
+		}
+		if(!$macro_id){
+			$macro_id = @$_GET['macro_id'];
 		}
 
-		if (!$macro = LetterMacro::model()->findByPk(@$_GET['macro_id'])) {
-			throw new Exception('Macro not found: '.@$_GET['macro_id']);
+		if (!$patient = Patient::model()->findByPk($patient_id)) {
+			throw new Exception('Patient not found: '.$patient_id);
+		}
+
+		if (!$macro = LetterMacro::model()->findByPk($macro_id)) {
+			throw new Exception('Macro not found: '.$macro_id);
 		}
 
 		$data = array();

@@ -601,6 +601,21 @@ class DefaultController extends BaseEventTypeController
 	}
 
 	/**
+	 * @param Element_OphTrOperationnote_Correspondence $element
+	 * @param array $data
+	 * @param integer $index
+	 */
+	protected function saveComplexAttributes_Element_OphTrOperationnote_Correspondence($element, $data, $index)
+	{
+		if(isset($data['Element_OphTrOperationnote_Correspondence']['macro_id']) && $data['Element_OphTrOperationnote_Correspondence']['macro_id'] >0 ){
+			if($api = Yii::app()->moduleAPI->get('OphCoCorrespondence')){
+				$api->createCorrespondenceContent($api->createNewCorrespondenceEvent($this->episode->id), $data['Element_OphTrOperationnote_Correspondence']['macro_id']);
+			}
+		}
+	}
+
+
+	/**
 	 * Update the anaesthetic agents and complications
 	 *
 	 * @param Element_OphTrOperationnote_Anaesthetic $element
