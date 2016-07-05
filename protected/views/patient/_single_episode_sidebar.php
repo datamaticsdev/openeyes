@@ -78,7 +78,7 @@ if (is_array($ordered_episodes)) {
 
                         <li class="subspecialty <?= $current_episode && $current_episode->getSubspecialtyID() == $id ? "selected" : ""; ?>"
                             data-subspecialty-id="<?= $id ?>"><?= CHtml::link($subspecialty_name, array('/patient/episode/' . $episode->id)) ?>
-                            <span class="tag" style="background-color: <?= $subspecialty_colour_codes[$tag] ?>;"><?= $tag ?></span></li>
+                            <span class="tag" style="background-color: <?= $subspecialty_colour_codes[$tag] ?>; color: #0a0b0c; "><?= $tag ?></span></li>
 
                     <?php }
                 } ?>
@@ -138,7 +138,7 @@ if (is_array($ordered_episodes)) {
                                     </span>
                                 <span
                                     class="event-date <?php echo ($event->isEventDateDifferentFromCreated()) ? ' ev_date' : '' ?>"> <?php echo $event->event_date ? $event->NHSDateAsHTML('event_date') : $event->NHSDateAsHTML('created_date'); ?></span>
-                                <span class="tag" style="background-color: <?= $subspecialty_colour_codes[$tag] ?>;"><?= $tag ?></span>
+                                <span class="tag" style="background-color: <?= $subspecialty_colour_codes[$tag] ?>; color: #0a0b0c; "><?= $tag ?></span>
                             </a>
 
                         </li>
