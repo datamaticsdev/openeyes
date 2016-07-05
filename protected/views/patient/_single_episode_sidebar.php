@@ -15,6 +15,26 @@
 
 
 <?php
+$subspecialty_colour_codes = array(
+    'AE' => '#916865',
+    'AD' => '#D4AA7D',
+    'AN' => '#D2D8B3',
+    'CA' => '#90A9B7',
+    'CO' => '#006992',
+    'EX' => '#ECA400',
+    'GL' => '#D5C4BB',
+    'MR' => '#D46A6A',
+    'PH' => '#BBA698',
+    'ON' => '#D4B483',
+    'PE' => '#E4DFDA',
+    'PC' => '#4281A4',
+    'RF' => '#957186',
+    'SP' => '#B3B749',
+    'UV' => '#A6AA7B',
+    'VR' => '#F4B4A6',
+    'Le' => '#cccccc'
+);
+
 // flatten the data structure to include legacy events into the core navigation. Note here we are
 // simply assuming that the first entry will be Ophthalmology specialty (for the purposes of this PoC
 // we don't anticipate events from any other specialty)
@@ -58,7 +78,7 @@ if (is_array($ordered_episodes)) {
 
                         <li class="subspecialty <?= $current_episode && $current_episode->getSubspecialtyID() == $id ? "selected" : ""; ?>"
                             data-subspecialty-id="<?= $id ?>"><?= CHtml::link($subspecialty_name, array('/patient/episode/' . $episode->id)) ?>
-                            <span class="tag"><?= $tag ?></span></li>
+                            <span class="tag" style="background-color: <?= $subspecialty_colour_codes[$tag] ?>;"><?= $tag ?></span></li>
 
                     <?php }
                 } ?>
@@ -118,7 +138,7 @@ if (is_array($ordered_episodes)) {
                                     </span>
                                 <span
                                     class="event-date <?php echo ($event->isEventDateDifferentFromCreated()) ? ' ev_date' : '' ?>"> <?php echo $event->event_date ? $event->NHSDateAsHTML('event_date') : $event->NHSDateAsHTML('created_date'); ?></span>
-                                <span class="tag"><?= $tag ?></span>
+                                <span class="tag" style="background-color: <?= $subspecialty_colour_codes[$tag] ?>;"><?= $tag ?></span>
                             </a>
 
                         </li>
