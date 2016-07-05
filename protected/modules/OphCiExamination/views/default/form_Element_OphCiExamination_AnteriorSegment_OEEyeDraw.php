@@ -26,7 +26,7 @@ $onreadycommand = array(
 );
 
 if (count($preload)) {
-    $onreadycommand[] = array('loadAdditional', $preload);
+    $onreadycommand[] = array('loadAdditional', array($preload));
 }
 
 $this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(

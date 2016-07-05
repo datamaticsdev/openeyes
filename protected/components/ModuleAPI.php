@@ -91,7 +91,7 @@ class ModuleAPI extends CApplicationComponent
 						else {
 							break;
 						}
-						$elements_for_event_type[] = $element_cls;
+						$elements_for_event_type[] = array('cls' => $element_cls, 'doodles' => $element_doodles);
 					}
 				}
 				$elements_by_event_type_id[$et_id] = $elements_for_event_type;
@@ -113,10 +113,9 @@ class ModuleAPI extends CApplicationComponent
 		// iterate through the relevant events for the requested doodles, and check the elements defined
 		// for those events for the given doodles. As each doodle is found, it's removed from the search
 		// to ensure we only get the most recent definition of the doodle in this search.
-		// TODO: Change this behaviour so that all doodles available on a given element are removed (if the doodle isn't
-		// present in a newer element, you wouldn't want to load it from an older one)
 		foreach (Event::model()->with(array('episode', 'episode.patient'))->findAll($criteria) as $event) {
-			foreach ($elements_by_event_type_id[$event->event_type_id] as $model) {
+			foreach ($elements_by_event_type_id[$event->event_type_id] as $element_info) {
+				$model = $element_info['cls'];
 				if ($element = $model::model()->find('event_id=?', array($event->id))) {
 					if (!$element->{"has" . ucfirst($side)}())
 						continue;
@@ -126,9 +125,14 @@ class ModuleAPI extends CApplicationComponent
 						$idx = array_search($ed->subclass, $doodles);
 						if ($idx !== false) {
 							$result[] = $ed;
-							unset($doodles[$idx]);
 						}
 					}
+					// don't want to search for any of the doodles that this element is defined as having
+					// in previous events, if they weren't present in the last drawing it's assumed they
+					// weren't present
+					$to_remove = array_intersect($doodles, $element_info['doodles']);
+					foreach (array_keys($to_remove) as $i)
+						unset($doodles[$i]);
 				}
 			}
 		}
