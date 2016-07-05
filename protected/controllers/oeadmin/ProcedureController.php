@@ -46,9 +46,15 @@ class ProcedureController extends BaseAdminController
 							'opcsCodes.name',
 							'default_duration',
 							'aliases',
+							'once_only',
+							'repeats',
 							'has_benefits',
 							'has_complications',
 							'active'
+		));
+		$admin->setUnsortableColumns(array(
+			'once_only',
+			'repeats'
 		));
 		$admin->searchAll();
 		$admin->getSearch()->addActiveFilter();
@@ -75,6 +81,8 @@ class ProcedureController extends BaseAdminController
 			'snomed_code' => 'text',
 			'snomed_term' => 'text',
 			'aliases' => 'text',
+			'once_only'=> 'checkbox',
+			'repeats' => 'checkbox',
 			'unbooked' => 'checkbox',
 			'active' => 'checkbox',
 			'opcsCodes' => array(

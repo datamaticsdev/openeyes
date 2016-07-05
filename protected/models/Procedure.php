@@ -25,6 +25,8 @@
  * @property string $term
  * @property string $short_format
  * @property integer $default_duration
+ * @property boolean $once_only
+ * @property boolean $repeats
  *
  * The followings are the available model relations:
  * @property Subspecialty $subspecialty
@@ -63,8 +65,7 @@ class Procedure extends BaseActiveRecordVersioned
             array('term, short_format, default_duration', 'required'),
             array('default_duration', 'numerical', 'integerOnly' => true, 'max' => 65535),
             array('term, short_format, snomed_term', 'length', 'max' => 255),
-            array('operationNotes', 'validateOpNotes'),
-            array('id, term, short_format, default_duration, active, unbooked, opcsCodes, benefits, complications, snomed_code, snomed_term, aliases, operationNotes', 'safe'),
+            array('id, term, short_format, default_duration, active, unbooked, opcsCodes, benefits, complications, snomed_code, snomed_term, aliases, operationNotes, once_only, repeats', 'safe'),
         );
     }
 
@@ -96,7 +97,9 @@ class Procedure extends BaseActiveRecordVersioned
             'term' => 'Term',
             'short_format' => 'Short Format',
             'default_duration' => 'Default Duration',
-            'opcsCodes.name' => 'OPCS Code'
+            'opcsCodes.name' => 'OPCS Code',
+            'once_only' => 'Cannot be repeated',
+            'repeats' => 'Repeats'
         );
     }
 
@@ -179,6 +182,10 @@ class Procedure extends BaseActiveRecordVersioned
     protected function afterFind()
     {
         $this->addOpNoteElementRelation();
+        if (isset($this->once_only))
+            $this->once_only = (bool) $this->once_only;
+        if (isset($this->repeats))
+            $this->repeats = (bool) $this->repeats;
 
         parent::afterFind();
     }
@@ -227,14 +234,6 @@ class Procedure extends BaseActiveRecordVersioned
 
         return $data;
     }
-
-    public function validateOpNotes($attribute, $params)
-    {
-        if (count($this->$attribute) > 1) {
-            $this->addError($attribute, 'Only one Operation Note element per Procedure');
-        }
-    }
-
 
     /**
      * @param $opNoteElementId
