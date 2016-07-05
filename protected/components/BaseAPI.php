@@ -19,6 +19,8 @@
 
 class BaseAPI
 {
+	public $current_episode_restriction = true;
+
 	/**
 	 * Returns the non-namespaced module class of the module API Instance
 	 *

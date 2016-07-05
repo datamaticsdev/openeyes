@@ -92,4 +92,43 @@ class OphTrOperationnote_API extends BaseAPI
 				->find($criteria);
 		}
 	}
+
+	/**
+	 * @param Patient $patient
+	 * @param $side
+	 * @param Event|null $ignore_event
+	 * @return array|void
+	 */
+	public function getPreviousProcedures(Patient $patient, $eye_id, Event $ignore_event = null) {
+		$criteria = new CDbCriteria();
+		$criteria->with = array('procedures');
+
+		$criteria->compare('t.eye_id', $eye_id);
+
+		if ($this->current_episode_restriction) {
+			if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
+				$criteria->compare('episode_id', $episode->id);
+			} else {
+				return;
+			}
+		}
+		else {
+			$criteria->compare('episode.patient_id', $patient->id);
+		}
+
+		if ($ignore_event && $ignore_event->id) {
+			$criteria->addCondition('event_id != :eid');
+			$criteria->params[':eid'] = $ignore_event->id;
+		}
+
+		$procs = array();
+		foreach (Element_OphTrOperationnote_ProcedureList::model()->with(array('event', 'event.episode'))->findAll($criteria) as $list) {
+			OELog::log($list->id);
+			foreach ($list->procedures as $p) {
+				$procs[] = $p;
+			}
+		}
+
+		return $procs;
+	}
 }

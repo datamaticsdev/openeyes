@@ -30,6 +30,7 @@
 	<div class="element-fields">
 		<?php echo $form->hiddenInput($element, 'booking_event_id')?>
 		<?php echo $form->radioButtons($element, 'eye_id', $element->eyeOptions, ($element->eye() ? $element->eye()->id : null), null, null, null ,null,null,array('label'=>2,'field'=>10))?>
+		<div id="<?= $element->elementType->class_name ?>_procedures">
 		<?php
 		$form->widget('application.widgets.ProcedureSelection',array(
 			'element' => $element,
@@ -39,6 +40,7 @@
 			'hidden' => ($this->action->id == 'create' && $element->eye == null && !@$_POST['Element_OphTrOperationnote_ProcedureList']['eye_id']),
 		));
 		?>
+		</div>
 	</div>
 	<div class="sub-elements active">
 		<?php $this->renderChildOpenElements($element, $this->action->id, $form, $data)?>

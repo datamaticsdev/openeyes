@@ -8,7 +8,7 @@
         <div class="large-12 column label">
             Create correspondence for the following:
         </div>
-    <div class="row" id="correspondencerow">
+    <div class="large-12 column" id="correspondencerow">
 		<div class="large-5 column">
             <?php echo $form->dropDownList($element, 'address_target', $correspondence_element->address_targets,  array('empty' => '- Recipient -', 'label' => 'Recipient'))?>
         </div>

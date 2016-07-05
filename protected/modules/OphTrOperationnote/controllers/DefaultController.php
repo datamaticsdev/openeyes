@@ -1015,4 +1015,42 @@ class DefaultController extends BaseEventTypeController
 				'user_id = :user_id AND firm_id = :firm_id',
 				array(':user_id'=>Yii::app()->user->id, ':firm_id'=> (int)Yii::app()->session['selected_firm_id']));
 	}
+
+	protected function setAndValidateElementsFromData($data)
+	{
+		$errors = parent::setAndValidateElementsFromData($data);
+		OELog::log(print_r($errors, true));
+		if ($procedure_element = $this->getOpenElementByClassName('Element_OphTrOperationnote_ProcedureList')) {
+			$api = Yii::app()->moduleAPI->get('OphTrOperationnote');
+			$api->current_episode_restriction = false;
+			$side = $procedure_element->eye_id;
+
+			$previous_procedures = $api->getPreviousProcedures($this->patient, $side, $this->event);
+			$duplicate_error = false;
+			if (count($previous_procedures)) {
+				$once_only = array();
+				foreach ($previous_procedures as $prev) {
+					if ($prev->once_only) {
+						$once_only[$prev->id] = $prev;
+					}
+				}
+				foreach ($procedure_element->procedures as $entered_proc) {
+					if (in_array($entered_proc->id, array_keys($once_only))) {
+						$procedure_element->addError('procedures', $entered_proc->term . " cannot be performed again on this eye.");
+						$duplicate_error = true;
+					}
+				}
+			}
+			if ($duplicate_error) {
+				$errors[$procedure_element->getElementTypeName()] = array();
+				foreach ($procedure_element->getErrors() as $errs) {
+					foreach ($errs as $err)
+						$errors[$procedure_element->getElementTypeName()][] = $err;
+				}
+			}
+
+		}
+
+		return $errors;
+	}
 }
