@@ -123,7 +123,6 @@ class OphTrOperationnote_API extends BaseAPI
 
 		$procs = array();
 		foreach (Element_OphTrOperationnote_ProcedureList::model()->with(array('event', 'event.episode'))->findAll($criteria) as $list) {
-			OELog::log($list->id);
 			foreach ($list->procedures as $p) {
 				$procs[] = $p;
 			}

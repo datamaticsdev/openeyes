@@ -377,4 +377,50 @@ class OphTrOperationbooking_API extends BaseAPI
 
 		return false;
 	}
+
+	/**
+	 * @param Patient $patient
+	 * @param $eye_id - as per valid eye values
+	 * @param Event|null $ignore_event
+	 * @return array|void
+	 */
+	public function getPreviousProcedures(Patient $patient, $eye_id, Event $ignore_event = null) {
+		$criteria = new CDbCriteria();
+		$criteria->with = array('procedures');
+
+		$eye_set = array(Eye::BOTH);
+		if ($eye_id == Eye::LEFT || Eye::BOTH) {
+			$eye_set[] = Eye::LEFT;
+		}
+		if ($eye_id == Eye::RIGHT || Eye::BOTH) {
+			$eye_set[] = Eye::RIGHT;
+		}
+
+		$criteria->addInCondition('t.eye_id', $eye_set);
+
+		if ($this->current_episode_restriction) {
+			if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
+				$criteria->compare('episode_id', $episode->id);
+			} else {
+				return;
+			}
+		}
+		else {
+			$criteria->compare('episode.patient_id', $patient->id);
+		}
+
+		if ($ignore_event && $ignore_event->id) {
+			$criteria->addCondition('event_id != :eid');
+			$criteria->params[':eid'] = $ignore_event->id;
+		}
+
+		$procs = array();
+		foreach (Element_OphTrOperationbooking_Operation::model()->with(array('event', 'event.episode'))->findAll($criteria) as $operation) {
+			foreach ($operation->procedures as $p) {
+				$procs[] = $p;
+			}
+		}
+
+		return $procs;
+	}
 }

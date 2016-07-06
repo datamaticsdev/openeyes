@@ -250,13 +250,32 @@ class DefaultController extends OphTrOperationbookingEventController
 		$errors = parent::setAndValidateElementsFromData($data);
 		// need to do some validation at the event level
 
-		$event_errors = OphTrOperationbooking_BookingHelper::validateElementsForEvent($this->open_elements);
+		$event_errors = OphTrOperationbooking_BookingHelper::validateElementsForEvent($this->open_elements, $this->event);
 		if ($event_errors) {
 			if (@$errors['Event']) {
 				$errors['Event'] = array_merge($errors['Event'], $event_errors);
 			}
 			else {
 				$errors['Event'] = $event_errors;
+			}
+		}
+
+		if ($op_el = $this->getOpenElementByClassName('Element_OphTrOperationbooking_Operation')) {
+			$api = Yii::app()->moduleAPI->get('OphTrOperationbooking');
+			$previous = $api->getPreviousProcedures($this->patient, $op_el->eye_id, $this->event);
+
+			$procedure_errors = Procedure::validateRepeatProcedures($previous, $op_el->procedures);
+
+			if (count($procedure_errors)) {
+				foreach ($procedure_errors as $err) {
+					$op_el->addError('procedures', $err);
+				}
+				$errors[$op_el->getElementTypeName()] = array();
+				foreach ($op_el->getErrors() as $operation_errors) {
+					foreach ($operation_errors as $error) {
+						$errors[$op_el->getElementTypeName()][] = $error;
+					}
+				}
 			}
 		}
 

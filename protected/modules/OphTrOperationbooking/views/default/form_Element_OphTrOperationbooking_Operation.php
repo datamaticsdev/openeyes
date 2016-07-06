@@ -18,10 +18,12 @@
  ?>
 <fieldset class="element-fields">
 	<?php echo $form->radioButtons($element, 'eye_id', CHtml::listData(Eye::model()->findAll(array('order'=>'display_order asc')),'id','name'))?>
+	<div id="<?= $element->elementType->class_name ?>_procedures">
 	<?php $form->widget('application.widgets.ProcedureSelection',array(
 		'element' => $element,
 		'durations' => true,
 	))?>
+	</div>
 	<?php echo $form->radioBoolean($element, 'consultant_required')?>
 	<?php echo $form->dropDownList($element, 'named_consultant_id',CHtml::listData(User::model()->findAll(array('condition' => 'is_consultant = 1 and is_surgeon=1','order' => 'last_name, first_name')),'id','reversedFullName'),array('empty'=>'- Please select -'),false,array('field'=>3));?>
 	<?php echo $form->radioBoolean($element, 'senior_fellow_to_do')?>

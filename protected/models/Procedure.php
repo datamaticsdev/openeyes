@@ -260,6 +260,35 @@ class Procedure extends BaseActiveRecordVersioned
     }
 
     /**
+     * Returns a list of error messages for procedures that are duplicated
+     *
+     * @param array $previous
+     * @param array $new
+     * @return array
+     */
+    static public function validateRepeatProcedures($previous = array(), $new = array()) {
+        if (!count($previous))
+            return array();
+
+        $once_only = array();
+        foreach ($previous as $prev) {
+            if ($prev->once_only) {
+                $once_only[$prev->id] = $prev;
+            }
+        }
+
+        $errors = array();
+
+        foreach ($new as $new_proc) {
+            if (in_array($new_proc->id, array_keys($once_only))) {
+                $errors[] = $new_proc->term . " cannot be performed more than once on the same eye.";
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
      * @param string $prop
      * @return mixed|null
      */
