@@ -44,7 +44,8 @@
  * @property User $user
  * @property User $usermodified
  * @property Eye $eye
- * @property OphTrOperationbooking_Operation_Procedures $procedures
+ * @property OphTrOperationbooking_Operation_Procedures[] $procedureItems
+ * @property Procedure[] $procedures
  * @property AnaestheticType $anaesthetic_type
  * @property Site $site
  * @property Element_OphTrOperationbooking_Operation_Priority $priority
