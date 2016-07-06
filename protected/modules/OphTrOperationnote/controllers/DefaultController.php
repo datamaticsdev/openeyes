@@ -1029,6 +1029,8 @@ class DefaultController extends BaseEventTypeController
 
 			$procedure_errors = Procedure::validateRepeatProcedures($previous, $procedure_element->procedures);
 
+			// have to ensure errors are added in a structure consistent with the formatting requirements of the front end
+			// (see the addError method in BaseEventTypeElement where the frontEndErrors property is defined)
 			if (count($procedure_errors)) {
 				foreach ($procedure_errors as $err) {
 					$procedure_element->addError('procedures', $err);

@@ -266,6 +266,8 @@ class DefaultController extends OphTrOperationbookingEventController
 
 			$procedure_errors = Procedure::validateRepeatProcedures($previous, $op_el->procedures);
 
+			// have to ensure errors are added in a structure consistent with the formatting requirements of the front end
+			// (see the addError method in BaseEventTypeElement where the frontEndErrors property is defined)
 			if (count($procedure_errors)) {
 				foreach ($procedure_errors as $err) {
 					$op_el->addError('procedures', $err);
