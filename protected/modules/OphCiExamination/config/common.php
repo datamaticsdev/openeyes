@@ -46,7 +46,8 @@ return array(
                     'PCIOL',
                     'ACIOL',
                     'ToricPCIOL',
-                    'PI'
+                    'PI',
+                    'CornealSuture'
                 )
             )
         )
