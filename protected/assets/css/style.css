@@ -2419,6 +2419,7 @@ th,
 td {
   margin: 0;
   padding: 0;
+
 }
 
 /* Default Link Styles */
@@ -5672,6 +5673,12 @@ html, body {
   background: #ffffff;
 }
 
+/* line 35, ../sass/openeyes/components/_global.scss */
+.wordbreak{
+  word-wrap: break-word;
+  word-break:break-all;
+}
+
 /* line 17, ../sass/openeyes/components/_containers.scss */
 .container {
   width: 100%;
@@ -8268,6 +8275,13 @@ tfoot.pagination-container .pagination-view-all {
   position: absolute;
   right: 0;
 }
+.panel.patient .clinical-summary-anchor {
+  bottom: 12px;
+  font-size: 0.6875rem;
+  padding-right: 8px;
+  position: absolute;
+  right: 63px;
+}
 @media screen {
   /* line 118, ../sass/openeyes/components/panels/_patient.scss */
   .stuck .panel.patient .patient-summary-anchor {
@@ -8324,6 +8338,10 @@ tfoot.pagination-container .pagination-view-all {
   display: inline-block;
   padding: 2px 3px 1px 33px;
 }
+.nhs-number .messages{
+  display: none;
+}
+
 @media print {
   /* line 156, ../sass/openeyes/components/panels/_patient.scss */
   .nhs-number {
@@ -9100,7 +9118,7 @@ tfoot.pagination-container .pagination-view-all {
     -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     position: fixed;
-    top: 74px;
+    top: 54px;
     z-index: 199;
   }
 }
