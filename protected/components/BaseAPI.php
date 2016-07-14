@@ -82,6 +82,10 @@ class BaseAPI
 	{
 		$event_type = $this->getEventType();
 
+		if (Yii::app()->params['single_episode']) {
+			return $patient->getAllEventsByType($event_type->id);
+		}
+
 		if ($episode) {
 			return $episode->getAllEventsByType($event_type->id);
 		}

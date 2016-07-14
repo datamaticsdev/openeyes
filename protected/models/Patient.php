@@ -273,6 +273,21 @@ class Patient extends BaseActiveRecordVersioned
         return true;
     }
 
+    /**
+     * Get all the events of the given type for this patient
+     *
+     * @param $event_type_id
+     * @return Event[]
+     */
+    public function getAllEventsByType($event_type_id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->compare('patient_id',$this->id);
+        $criteria->compare('event_type_id',$event_type_id);
+        $criteria->order = 'event_date asc';
+        return Event::model()->with('episode.patient')->findAll($criteria);
+    }
+
     /*
      * will group episodes by specialty, ordered by the configuration key of specialty sort,
      * and alphanumeric for any specialties not configured.
