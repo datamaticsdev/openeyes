@@ -1,5 +1,8 @@
 .panel {
   &.specialty {
+    .panel {
+      padding: 2px;
+    }
     ol.subspecialties {
       margin-left: 2px;
     }
@@ -14,9 +17,10 @@
       }
       .tag {
         @include border-radius(2px 2px 2px 2px);
-        text-align: right;
+        text-align: center;
         float: right;
         padding: 1px;
+        width: 23px;
         background-color: lightgrey;
       }
     }
@@ -42,9 +46,9 @@
         @include border-radius(0 6px 6px 0);
         display: block;
         font-size: $default-font-size;
-        padding: 0 10px 0 2px;
+        padding: 0 4px 0 2px;
         &:hover {
-          background: #3665ff image-url("_elements/icons/event/event_open_arrow.png") right center no-repeat;
+          background: #3665ff;
           color: white;
         }
       }
@@ -63,15 +67,16 @@
         }
         .tag {
           @include border-radius(2px 2px 2px 2px);
-          text-align: right;
+          text-align: center;
           padding: 1px;
+          width: 16px;
           background-color: lightgrey;
           font-size: 0.3em;
           position: absolute;
           top: 50%;
           height: 70%;
           margin-top: -5%;
-          margin-left: -2px;
+          margin-left: 7px;
         }
       }
       .event-type {
