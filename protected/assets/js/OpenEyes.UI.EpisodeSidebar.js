@@ -30,6 +30,7 @@
 
     var groupings = [
         {id: 'none', label: 'None'},
+        {id: 'event-year-display', label: 'Year'},
         {id: 'event-date-display', label: 'Date'},
         {id: 'event-type', label: 'Type'},
         {id: 'subspecialty', label: 'Subspecialty'}
@@ -49,28 +50,27 @@
 
     EpisodeSidebar.prototype.loadState = function() {
         var self = this;
-        var original = $.cookie.json;
-        $.cookie.json = true;
-        var state = $.cookie(sidebarCookiePrefix + self.element.attr('id'));
-        $.cookie.json = original;
-        if (state) {
-            if (state.sortOrder)
-                self.sortOrder = state.sortOrder;
-            if (state.grouping)
-                self.grouping = state.grouping;
+        if (typeof(Storage) !== "undefined") {
+            state = sessionStorage.getItem(sidebarCookiePrefix + self.element.attr('id'));
+            if (state) {
+                stateObj = JSON.parse(state);
+                if (stateObj.sortOrder)
+                    self.sortOrder = stateObj.sortOrder;
+                if (stateObj.grouping)
+                    self.grouping = stateObj.grouping;
+            }
         }
     };
 
     EpisodeSidebar.prototype.saveState = function() {
         var self = this;
-        var state = {
-            sortOrder: self.sortOrder,
-            grouping: self.grouping
-        };
-        var original = $.cookie.json;
-        $.cookie.json = true;
-        $.cookie(sidebarCookiePrefix + self.element.attr('id'), state);
-        $.cookie.json = original;
+        if (typeof(Storage) !== "undefined") {
+            var state = {
+                sortOrder: self.sortOrder,
+                grouping: self.grouping
+            };
+            sessionStorage.setItem(sidebarCookiePrefix + self.element.attr('id'), JSON.stringify(state));
+        }
     };
 
     EpisodeSidebar.prototype.create = function() {

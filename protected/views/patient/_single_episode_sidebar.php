@@ -111,6 +111,7 @@ if (is_array($ordered_episodes)) {
                         <li id="eventLi<?php echo $event->id ?>"
                             class="<?php if ($highlight) { ?> selected<?php }?><?php if ($lowlight) { echo "lowlight"; }?>"
                             data-event-date="<?= $event->event_date ?>" data-created-date="<?= $event->created_date ?>"
+                            data-event-year-display="<?= substr($event->NHSDate('event_date'), -4) ?>"
                             data-event-date-display="<?= $event->NHSDate('event_date') ?>"
                             data-event-type="<?= $event->eventType->name ?>"
                             data-subspecialty="<?= $subspecialty_name ?>">
