@@ -1540,4 +1540,15 @@ class Element_OphTrOperationbooking_Operation extends BaseEventTypeElement
 			return date('Y-m-d',strtotime('+' .$rtt_weeks . ' weeks', strtotime($this->decision_date)));
 		}
 	}
+
+	public function getInfoText()
+	{
+		$side = $this->eye->name;
+		$res = "";
+		foreach($this->procedures as $proc) {
+			$res .= "{$side}: {$proc->term}\n";
+		}
+
+		return $res;
+	}
 }
