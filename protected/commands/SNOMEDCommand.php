@@ -12,7 +12,7 @@ class SNOMEDCommand extends CConsoleCommand
     private $descFile;
     private $relFile;
     
-    public function actionInit(){
+    public function init(){
         $this->db = Yii::app()->db;
     }
     
@@ -32,7 +32,7 @@ class SNOMEDCommand extends CConsoleCommand
             return true;
         }
         
-        $this->usageError("\n\nFile not found: " . $file);
+        $this->usageError("\n\nFile not found or not readable: " . $file);
         return false;
     }
     
@@ -80,11 +80,83 @@ class SNOMEDCommand extends CConsoleCommand
     private function createSnomedCoreTables()
     {
         $this->createAndPopulateConceptsTable();
+        $this->createAndPopulateDescriptionsTable();
+        $this->createAndPopulateRelationshipsTable();
         
         return false;
     }
     
-    private function createAndPopulateConceptsTable(){}
+    /**
+     * Creating and populating the Concepts table
+     */
+    private function createAndPopulateConceptsTable()
+    {
+        $this->db->createCommand("DROP TABLE IF EXISTS " . self::CONCEPT_TABLE)->execute();
+        
+        $sql = "CREATE TABLE " . self::CONCEPT_TABLE . " (
+                    ConceptId BIGINT UNSIGNED NOT NULL,
+                    ConceptStatus INT UNSIGNED NOT NULL,
+                    FullySpecifiedName CHAR(255) NOT NULL,
+                    CTV3ID CHAR(5) NOT NULL,
+                    SNOMEDID CHAR(8) NOT NULL,
+                    IsPrimitive BOOL,
+                    PRIMARY KEY (Conceptid)
+                );";
+        
+        $this->db->createCommand($sql)->execute();
+        
+        //The following command will load all the concepts. For use in OpenEyes it is recommended that only a subset is used.
+        $sql = "LOAD DATA LOCAL INFILE '" . $this->conceptFile . "' INTO TABLE " . self::CONCEPT_TABLE . " IGNORE 1 LINES;";
+        $this->db->createCommand($sql)->execute();
+    }
+    
+    /**
+     * Creating and populating the Descriptions table
+     */
+    private function createAndPopulateDescriptionsTable()
+    {
+        $this->db->createCommand("DROP TABLE IF EXISTS " . self::DESC_TABLE)->execute();
+        
+        $sql = "CREATE TABLE " . self::DESC_TABLE . " (
+                    DescriptionId BIGINT UNSIGNED NOT NULL,
+                    DescriptionStatus INT UNSIGNED NOT NULL,
+                    ConceptId BIGINT UNSIGNED NOT NULL,
+                    Term CHAR(255) NOT NULL,
+                    InitialCapitalStatus BOOL,
+                    DescriptionType INT UNSIGNED NOT NULL,
+                    LanguageCode CHAR(8),
+                    PRIMARY KEY (DescriptionId)
+                );";
+        
+        $this->db->createCommand($sql)->execute();
+
+        $sql = "LOAD DATA LOCAL INFILE '" . $this->descFile . "' INTO TABLE " . self::DESC_TABLE . " IGNORE 1 LINES;";
+        $this->db->createCommand($sql)->execute();
+    }
+    
+    /**
+     * Creating and populating the Relation table
+     */
+    private function createAndPopulateRelationshipsTable()
+    {
+        $this->db->createCommand("DROP TABLE IF EXISTS " . self::REL_TABLE)->execute();
+        
+        $sql = "CREATE TABLE " . self::REL_TABLE . " (
+                    RelationshipId BIGINT UNSIGNED NOT NULL, 
+                    ConceptId1 BIGINT UNSIGNED NOT NULL, 
+                    RelationshipType BIGINT UNSIGNED NOT NULL, 
+                    ConceptId2 BIGINT UNSIGNED NOT NULL, 
+                    CharacteristicType INT UNSIGNED NOT NULL, 
+                    RelationshipGroup SMALLINT UNSIGNED, 
+                    PRIMARY KEY (RelationshipId)
+                );";
+        
+        $this->db->createCommand($sql)->execute();
+
+        $sql = "LOAD DATA LOCAL INFILE '" . $this->relFile . "' INTO TABLE " . self::REL_TABLE . " IGNORE 1 LINES;";
+        $this->db->createCommand($sql)->execute();
+
+    }
     
     /** End of Creating SNOMED core tables **/
     
