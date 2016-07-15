@@ -3,11 +3,27 @@
         <span class="icon-button-small-plus-sign"></span>
         Episode
     </button>
+    <?php
+        $enabled = false;
+        $change_firm = false;
+        if ($current_episode) {
+            $enabled = true;
+            if ($current_episode->getSubspecialtyID() != $this->firm->getSubspecialtyID()) {
+                $change_firm = true;
+            }
+        }
+        $class = "disabled";
+        if ($enabled) {
+            $class = $change_firm ? "change-firm" : "enabled";
+        }
+    ?>
     <button
-        class="secondary tiny add-event addEvent <?= $current_episode && $current_episode->getSubspecialtyID() == $this->firm->getSubspecialtyID() ? "enabled" : "disabled"?>"
+        class="secondary tiny add-event addEvent <?= $class ?>"
         type="button"
         id="add-event"
-        data-attr-subspecialty-id="<?= $this->firm->getSubspecialtyID();?>">
+        data-attr-subspecialty-id="<?= $this->firm->getSubspecialtyID();?>"
+    <?= $change_firm ? 'data-window-title="Please switch to a ' . $current_episode->getSubspecialtyText() . ' Firm"' : ''; ?>
+    >
         <span class="icon-button-small-plus-sign"></span>
         Event
     </button>
@@ -186,5 +202,11 @@ if (is_array($ordered_episodes)) {
                 quick.hide();
             });
         });
+
+        if (window.location.search.replace("?", "") == "show-new-event=1") {
+            // quick fix to trigger the new event window after the user is asked to select
+            // a new firm.
+            $('button.add-event').trigger('click');
+        }
     });
 </script>

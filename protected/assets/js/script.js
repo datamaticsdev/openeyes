@@ -244,14 +244,19 @@ $(document).ready(function(){
 		};
 
 		// Show the 'change firm' dialog when clicking on the 'change firm' link.
-		$('.change-firm a').click(function(e) {
+		$(document).on('click', '.change-firm', function(e) {
 
 			e.preventDefault();
+			var returnUrl = window.location.href;
+			if ($(e.target).data('window-title')) {
+				options.title = $(e.target).data('window-title');
+				returnUrl += '?show-new-event=1';
+			}
 
 			new OpenEyes.UI.Dialog($.extend({}, options, {
 				url: baseUrl + '/site/changesiteandfirm',
 				data: {
-					returnUrl: window.location.href,
+					returnUrl: returnUrl,
 					patient_id: window.OE_patient_id || null
 				}
 			})).open();
