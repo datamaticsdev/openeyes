@@ -224,4 +224,19 @@ class Element_OphTrOperationnote_ProcedureList extends Element_OpNote
 		return false;
 	}
 
+	/**
+	 * List the procedures with the eye side abbreviation.
+	 *
+	 * @return string
+	 */
+	public function getInfoText()
+	{
+		$side = $this->eye->name;
+		$res = "";
+		foreach($this->procedures as $proc) {
+			$res .= "{$side}: {$proc->term}";
+		}
+
+		return $res;
+	}
 }
