@@ -25,5 +25,8 @@ return array(
 		'generatesessions' => array(
 			'class' => 'application.modules.OphTrOperationbooking.commands.GenerateSessionsCommand',
 		),
+		'addprocedurestobookingevents' => array(
+			'class' => 'application.modules.OphTrOperationbooking.commands.AddProceduresToEventInfoCommand',
+		)
 	),
 );
