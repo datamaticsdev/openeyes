@@ -1,5 +1,5 @@
-<<<<<<< HEAD
 <?php
+
 /**
  * OpenEyes
  *
@@ -48,6 +48,7 @@
  * @property OperativeDevice[] $operative_devices
  * @property OphTrOperationnote_IOLType $iol_type
  */
+
 class Element_OphTrOperationnote_Cataract extends Element_OnDemand
 {
     public $service;
@@ -130,6 +131,7 @@ class Element_OphTrOperationnote_Cataract extends Element_OnDemand
     /**
      * @return array customized attribute labels (name=>label)
      */
+
     public function attributeLabels()
     {
         return array(
