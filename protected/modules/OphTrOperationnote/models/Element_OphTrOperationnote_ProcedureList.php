@@ -234,7 +234,7 @@ class Element_OphTrOperationnote_ProcedureList extends Element_OpNote
 		$side = $this->eye->name;
 		$res = "";
 		foreach($this->procedures as $proc) {
-			$res .= "{$side}: {$proc->term}";
+			$res .= "{$side}: {$proc->term}\n";
 		}
 
 		return $res;
