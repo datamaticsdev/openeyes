@@ -3,8 +3,16 @@
     .panel {
       padding: 2px;
     }
+    .sidebar-grouping {
+      white-space: nowrap;
+      & label {
+        font-size: 0.7em;
+        display: inline;
+      }
+    }
     ol.subspecialties {
       margin-left: 2px;
+      margin-bottom: 2px;
     }
     .subspecialty {
       list-style: none;
@@ -99,7 +107,8 @@
       }
       .event-date {
         display: inline-block;
-        padding-left: 10px;
+        padding-left: 20px;
+        margin-left: -3px;
         .day,
         .mth,
         .yr {

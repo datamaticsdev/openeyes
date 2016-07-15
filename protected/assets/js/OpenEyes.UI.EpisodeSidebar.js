@@ -203,6 +203,7 @@
         });
 
         self.element.on('click', '.sorting-order', function(e) {
+            e.preventDefault();
             if ($(e.target).hasClass('fa-sort-asc')) {
                 self.sortOrder = 'asc';
                 $(e.target).removeClass('fa-sort-asc').addClass('fa-sort-desc');
@@ -219,7 +220,7 @@
 
     EpisodeSidebar.prototype.getGroupingPicker = function() {
         var self = this;
-        var select = '<span style="white-space: nowrap;"><label for="grouping-picker" style="display: inline;">Grp by:</label>';
+        var select = '<span class="sidebar-grouping"><label for="grouping-picker">Grp by:</label>';
         select += '<select name="grouping-picker" class="' + self.options.grouping_picker_class + '">';
         $(groupings).each(function() {
             select += '<option value="' + this.id +'"';
@@ -234,7 +235,7 @@
 
     EpisodeSidebar.prototype.getListControls = function() {
         var controls = '<div class="list-controls"><a href="#" class="collapse-all">collapse all</a> | <a href="#" class="expand-all">expand all</a>';
-        controls += '<span style="float: right;"><span class="sorting-order fa fa-sort-asc"></span></span>';
+        controls += '<a href="#" class="sorting-order" style="float: right;"><span class="fa fa-sort-asc"></span></a>';
         controls += '</div>';
         return controls;
     };
