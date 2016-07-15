@@ -1,5 +1,8 @@
 <?php
     $correspondence_element = new ElementLetter();
+    if ($this->event->id) {
+        $correspondence_element->event = $this->event;
+    }
 
 ?>
 
