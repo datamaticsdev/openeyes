@@ -914,7 +914,7 @@ class OphCiExamination_API extends \BaseAPI
                 }
 
                 if ($el = models\Element_OphCiExamination_OCT::model()->with('event')->find($criteria)) {
-                    $res[] = array('date' => $event->created_date, 'sft' => $el->{$side . '_sft'});
+                    $res[] = array('date' => $event->event_date, 'sft' => $el->{$side . '_sft'});
                 }
             }
             return $res;

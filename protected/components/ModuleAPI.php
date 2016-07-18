@@ -80,9 +80,9 @@ class ModuleAPI extends CApplicationComponent
 
 		// build a list of relevant event types for the requested doodles
 		foreach (Yii::app()->params['eyedraw_elements'] as $module_name => $elements) {
+			$et_id = null;
+			$elements_for_event_type = array();
 			foreach ($elements as $element_cls => $element_doodles) {
-				$et_id = null;
-				$elements_for_event_type = array();
 				if (array_intersect($doodles, $element_doodles)) {
 					if (!count($elements_for_event_type)) {
 						if ($et = EventType::model()->find('class_name = ?', array($module_name)) ) {
@@ -91,12 +91,12 @@ class ModuleAPI extends CApplicationComponent
 						else {
 							break;
 						}
-						$elements_for_event_type[] = array('cls' => $element_cls, 'doodles' => $element_doodles);
 					}
+					$elements_for_event_type[] = array('cls' => $element_cls, 'doodles' => $element_doodles);
 				}
-				$elements_by_event_type_id[$et_id] = $elements_for_event_type;
 			}
-
+			if ($et_id)
+				$elements_by_event_type_id[$et_id] = $elements_for_event_type;
 		}
 
 		if (!count($elements_by_event_type_id))
@@ -119,8 +119,8 @@ class ModuleAPI extends CApplicationComponent
 				if ($element = $model::model()->find('event_id=?', array($event->id))) {
 					if (!$element->{"has" . ucfirst($side)}())
 						continue;
-
 					$eyedraw = json_decode($element->{strtolower($side) . '_eyedraw'});
+
 					foreach ($eyedraw as $ed) {
 						$idx = array_search($ed->subclass, $doodles);
 						if ($idx !== false) {

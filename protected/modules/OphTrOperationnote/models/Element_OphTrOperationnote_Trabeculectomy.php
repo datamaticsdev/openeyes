@@ -82,4 +82,59 @@ class Element_OphTrOperationnote_Trabeculectomy extends Element_OnDemand
 
 		return parent::afterValidate();
 	}
+
+	/**
+	 * @var boolean
+	 */
+	protected $_has_left;
+
+	/**
+	 * @return bool
+	 */
+	public function hasLeft()
+	{
+		if (is_null($this->_has_left)) {
+			if ($proc = Element_OphTrOperationnote_ProcedureList::model()->find('event_id = ?', array($this->event_id))) {
+				$this->_has_left = $proc->hasLeft();
+			}
+			else {
+				$this->_has_left = false;
+			}
+		}
+		return $this->_has_left;
+	}
+
+	public function getLeft_eyedraw()
+	{
+		return $this->hasLeft() ? $this->eyedraw : null;
+	}
+
+	/**
+	 * @var boolean
+	 */
+	protected $_has_right;
+
+	/**
+	 * @return bool
+	 */
+	public function hasRight()
+	{
+		if (is_null($this->_has_right)) {
+			if ($proc = Element_OphTrOperationnote_ProcedureList::model()->find('event_id = ?', array($this->event_id))) {
+				$this->_has_right = $proc->hasRight();
+			}
+			else {
+				$this->_has_right = false;
+			}
+		}
+		return $this->_has_right;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getRight_eyedraw()
+	{
+		return $this->hasRight() ? $this->eyedraw : null;
+	}
 }

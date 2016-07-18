@@ -31,7 +31,14 @@ return array(
 					'ACIOL',
 					'ToricPCIOL',
 					'CornealSuture'
+				),
+				'Element_OphTrOperationnote_Trabeculectomy' => array(
+					'ConjunctivalFlap',
+					'TrabyFlap',
+					'TrabySuture',
+					'SidePort'
 				)
+
 			)
 		),
 		'admin_menu' => array(
