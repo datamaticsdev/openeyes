@@ -17,14 +17,95 @@
  */
 
 var VFImages, OCTImages;
+var MedChart, IOPchart, VAchart;
 var lastIndex = 0;
-var currentMedY = 100;
+var currentMedY = 20;
 var currentIndexDate = new Date().getTime();
 var fixedPoint = {point: undefined, side: undefined, color: undefined};
+var defaultTickInterval = 5;
 
 $(document).ready(function() {
+    // Create the medication Chart
+    MedChart = new Highcharts.StockChart({
+        chart:{
+            renderTo: 'medchart',
+            marginLeft: 50,
+            spacingLeft: 30
+        },
+        tooltip: {
+            shared:true,
+            xDateFormat: '<b>%d/%m/%Y</b>',
+        },
+        plotOptions: {
+            series: {
+                states: {
+                    hover: {
+                        enabled: true,
+                        lineWidthPlus: 0,
+                    }
+                },
+                marker:{
+                    enabled: true,
+                    radius: 4
+                }
+            }
+        },
+
+        rangeSelector : {
+            enabled: 0,
+            inputEnabled: false,
+            selected: 5
+        },
+
+        legend: {
+            enabled: 1,
+            floating: true,
+            align: 'right',
+            verticalAlign: 'top',
+            borderColor: '#dddddd',
+            borderWidth: 1,
+            layout: 'vertical',
+            shadow: true,
+            y: 24
+        },
+
+        title : {
+            text : 'Medications'
+        },
+        xAxis:{
+            labels:
+            {
+                enabled: false
+            }
+        },
+        yAxis: {
+            min: 0,
+            max: 20,
+            opposite:false,
+            isDirty: true,
+            labels:
+            {
+                align: 'left',
+                x: -20,
+                y: -2
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        navigator: {
+            enabled: false
+        },
+        scrollbar : {
+            enabled : false
+        }
+    },function(chart) {
+        syncronizeCrossHairs(chart);
+    });
+
+
     // Create the IOP chart
-    var IOPchart = new Highcharts.StockChart({
+    IOPchart = new Highcharts.StockChart({
         chart:{
             renderTo: 'iopchart',
             events: {
@@ -56,7 +137,7 @@ $(document).ready(function() {
         },
 
         rangeSelector : {
-            enabled: 1,
+            enabled: false,
             inputEnabled: false,
             selected: 5
         },
@@ -84,7 +165,7 @@ $(document).ready(function() {
         },
         yAxis: {
             min: 0,
-            max: 100,
+            max: 60,
             opposite:false,
             isDirty: true,
             labels:
@@ -98,12 +179,13 @@ $(document).ready(function() {
             enabled: false
         },
         navigator: {
-            margin: 2,
-            height: 20,
-            series:{
-                lineWidth: 0,
-            }
+            enabled: false
+        },
+        scrollbar : {
+            enabled : false
         }
+    },function(chart) {
+        syncronizeCrossHairs(chart);
     });
 
     addSeries(IOPchart, 1, "IOP", "DataSet", "#4d9900", 'solid', 0);
@@ -125,7 +207,7 @@ $(document).ready(function() {
         type: "GET",
         dataType: "json",
         success: function(data) {
-            data.forEach(AddMedication, IOPchart);
+            data.forEach(AddMedication, MedChart);
             redrawCharts();
         },
         cache: false
@@ -193,7 +275,7 @@ $(document).ready(function() {
     addRegressionChart();
 
     // create the Visual Acuity chart
-    var VAchart = new Highcharts.StockChart({
+    VAchart = new Highcharts.StockChart({
         chart:{
             renderTo: 'vachart',
             marginLeft: 50,
@@ -247,6 +329,31 @@ $(document).ready(function() {
             labels:
             {
                 enabled: false
+            },
+            events:{
+                afterSetExtremes:function(event){
+                    if (!this.chart.options.chart.isZoomed)
+                    {
+                        var xMin = this.chart.xAxis[0].min;
+                        var xMax = this.chart.xAxis[0].max;
+
+                        var zmRange = computeTickInterval(xMin, xMax);
+                        MedChart.xAxis[0].options.tickInterval =zmRange;
+                        MedChart.xAxis[0].isDirty = true;
+                        IOPchart.xAxis[0].options.tickInterval = zmRange;
+                        IOPchart.xAxis[0].isDirty = true;
+                        VAchart.xAxis[0].options.tickInterval = zmRange;
+                        VAchart.xAxis[0].isDirty = true;
+
+                        MedChart.options.chart.isZoomed = true;
+                        IOPchart.options.chart.isZoomed = true;
+                        MedChart.xAxis[0].setExtremes(xMin, xMax, true);
+
+                        IOPchart.xAxis[0].setExtremes(xMin, xMax, true);
+                        IOPchart.options.chart.isZoomed = false;
+                        MedChart.options.chart.isZoomed = false;
+                    }
+                }
             }
         },
         yAxis: [{
@@ -292,6 +399,8 @@ $(document).ready(function() {
                 lineWidth: 0,
             }
         }
+    },function(chart) {
+        syncronizeCrossHairs(chart);
     });
 
     addSeries(VAchart, 1, "VA", "DataSetVA", "#4d9900", 'solid', 0);
@@ -467,7 +576,7 @@ function getSideId(sidename){
 function AddOperation(item, index){
     //console.log(item);
 
-    var color, yshift=150;
+    var color, yshift=10;
 
     if(item[2] == 1){
         color = '#4d9900';
@@ -688,6 +797,97 @@ function changeOCTImages(xCoord, imageWidth){
         i++;
     });
     //console.log(xCoord+' imgNr: '+allImagesNr+' width: '+imageWidth+' index: '+currentIndex+' last indx:'+lastIndex);
+}
+
+//catch mousemove event and have all 3 charts' crosshairs move along indicated values on x axis
+
+function syncronizeCrossHairs(chart) {
+    var container = $(chart.container),
+        offset = container.offset(),
+        x, y, isInside, report;
+
+    container.mousemove(function(evt) {
+
+        x = evt.clientX - chart.plotLeft - offset.left;
+        y = evt.clientY - chart.plotTop - offset.top;
+        var xAxis = chart.xAxis[0];
+        //remove old plot line and draw new plot line (crosshair) for this chart
+        var xAxis1 = MedChart.xAxis[0];
+        xAxis1.removePlotLine("myPlotLineId");
+        xAxis1.addPlotLine({
+            value: chart.xAxis[0].translate(x, true),
+            width: 1,
+            color: 'grey',
+            //dashStyle: 'dash',
+            id: "myPlotLineId"
+        });
+        //remove old crosshair and draw new crosshair on chart2
+        var xAxis2 = IOPchart.xAxis[0];
+        xAxis2.removePlotLine("myPlotLineId");
+        xAxis2.addPlotLine({
+            value: chart.xAxis[0].translate(x, true),
+            width: 1,
+            color: 'grey',
+            //dashStyle: 'dash',
+            id: "myPlotLineId"
+        });
+
+        var xAxis3 = VAchart.xAxis[0];
+        xAxis3.removePlotLine("myPlotLineId");
+        xAxis3.addPlotLine({
+            value: chart.xAxis[0].translate(x, true),
+            width: 1,
+            color: 'grey',
+            //dashStyle: 'dash',
+            id: "myPlotLineId"
+        });
+
+        //if you have other charts that need to be syncronized - update their crosshair (plot line) in the same way in this function.
+    });
+}
+
+//compute a reasonable tick interval given the zoom range -
+//have to compute this since we set the tickIntervals in order
+//to get predictable synchronization between 3 charts with
+//different data.
+function computeTickInterval(xMin, xMax) {
+    var zoomRange = xMax - xMin;
+
+    if (zoomRange <= 2)
+        currentTickInterval = 0.5;
+    if (zoomRange < 20)
+        currentTickInterval = 1;
+    else if (zoomRange < 100)
+        currentTickInterval = 5;
+}
+
+//explicitly set the tickInterval for the 3 charts - based on
+//selected range
+function setTickInterval(event) {
+    var xMin = event.xAxis[0].min;
+    var xMax = event.xAxis[0].max;
+    computeTickInterval(xMin, xMax);
+
+    MedChart.xAxis[0].options.tickInterval = currentTickInterval;
+    MedChart.xAxis[0].isDirty = true;
+    IOPchart.xAxis[0].options.tickInterval = currentTickInterval;
+    IOPchart.xAxis[0].isDirty = true;
+    VAchart.xAxis[0].options.tickInterval = currentTickInterval;
+    VAchart.xAxis[0].isDirty = true;
+}
+
+//reset the extremes and the tickInterval to default values
+function unzoom() {
+    MedChart.xAxis[0].options.tickInterval = defaultTickInterval;
+    MedChart.xAxis[0].isDirty = true;
+    IOPchart.xAxis[0].options.tickInterval = defaultTickInterval;
+    IOPchart.xAxis[0].isDirty = true;
+    VAchart.xAxis[0].options.tickInterval = defaultTickInterval;
+    VAchart.xAxis[0].isDirty = true;
+
+    MedChart.xAxis[0].setExtremes(null, null);
+    IOPchart.xAxis[0].setExtremes(null, null);
+    VAchart.xAxis[0].setExtremes(null, null);
 }
 
 function linearRegression(data){
