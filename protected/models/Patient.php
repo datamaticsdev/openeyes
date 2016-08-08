@@ -1142,11 +1142,27 @@ class Patient extends BaseActiveRecordVersioned
 
     public function getOphthalmicDiagnoses()
     {
+        return $this->getSpecialtyDiagnoses(130);
+    }
+
+    /**
+     * @param null $code
+     * @return array|CActiveRecord[]
+     */
+    public function getSpecialtyDiagnoses($code = null)
+    {
+        if (is_null($code)) {
+            $code = Yii::app()->params['specialty_code'];
+        }
+        if (!$code) {
+            return array();
+        }
+
         $criteria = new CDbCriteria();
         $criteria->compare('patient_id', $this->id);
 
         $criteria->join = 'join disorder on t.disorder_id = disorder.id join specialty on disorder.specialty_id = specialty.id';
-        $criteria->compare('specialty.code', 130);
+        $criteria->compare('specialty.code', $code);
 
         $criteria->order = 'date asc';
 

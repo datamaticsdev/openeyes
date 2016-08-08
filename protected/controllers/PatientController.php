@@ -720,13 +720,30 @@ class PatientController extends BaseController
         return Helper::padFuzzyDate(@$_POST['fuzzy_year'], @$_POST['fuzzy_month'], @$_POST['fuzzy_day']);
     }
 
+    protected function getDisorderIdFromSelection($data)
+    {
+        foreach (array_keys($data) as $k) {
+            if (preg_match("/^([^_]+)_disorder_id$/", $k, $matches)) {
+                if (is_numeric($matches[1]) || in_array($matches[1], array('ophthalmic', 'systemic'))) {
+                    return $data[$k];
+                }
+            }
+        }
+    }
+
+
     public function actionAdddiagnosis()
     {
-        if (isset($_POST['DiagnosisSelection']['ophthalmic_disorder_id'])) {
-            $disorder = Disorder::model()->findByPk(@$_POST['DiagnosisSelection']['ophthalmic_disorder_id']);
-        } else {
-            $disorder = Disorder::model()->findByPk(@$_POST['DiagnosisSelection']['systemic_disorder_id']);
+        if (!isset($_POST['DiagnosisSelection'])) {
+            throw new CHttpException('Invalid Request');
         }
+
+        $disorder_id = $this->getDisorderIdFromSelection($_POST['DiagnosisSelection']);
+        if (!$disorder_id) {
+            throw new CHttpException('Invalid Request');
+        }
+
+        $disorder = Disorder::model()->findByPk($disorder_id);
 
         if (!$disorder) {
             throw new Exception('Unable to find disorder: '.@$_POST['DiagnosisSelection']['ophthalmic_disorder_id'].' / '.@$_POST['DiagnosisSelection']['systemic_disorder_id']);
@@ -738,7 +755,7 @@ class PatientController extends BaseController
 
         $date = $this->processFuzzyDate();
 
-        if (!$_POST['diagnosis_eye']) {
+        if (!isset($_POST['diagnosis_eye'])) {
             if (!SecondaryDiagnosis::model()->find('patient_id=? and disorder_id=? and date=?', array($patient->id, $disorder->id, $date))) {
                 $patient->addDiagnosis($disorder->id, null, $date);
             }
@@ -757,11 +774,11 @@ class PatientController extends BaseController
             throw new Exception('Patient not found: '.@$_POST['patient_id']);
         }
 
-        if (isset($_POST['DiagnosisSelection']['ophthalmic_disorder_id'])) {
-            $disorder_id = $_POST['DiagnosisSelection']['ophthalmic_disorder_id'];
-        } elseif (isset($_POST['DiagnosisSelection']['systemic_disorder_id'])) {
-            $disorder_id = $_POST['DiagnosisSelection']['systemic_disorder_id'];
+        if (!isset($_POST['DiagnosisSelection'])) {
+            throw new CHttpException('Invalid Request');
         }
+
+        $disorder_id = $this->getDisorderIdFromSelection($_POST['DiagnosisSelection']);
 
         $sd = new SecondaryDiagnosis();
         $sd->patient_id = $patient->id;

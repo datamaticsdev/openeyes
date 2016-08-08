@@ -53,6 +53,7 @@ try {
         try {
             echo $this->renderPartial('_'.$code.'_diagnoses');
         } catch (Exception $e) {
+            echo $this->renderPartial('_secondary_diagnoses', array('code' => $code));
         }
     }
     $this->renderPartial('_systemic_diagnoses');
