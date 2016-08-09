@@ -21,7 +21,7 @@
 	<header class="box-header">
 		<h3 class="box-title">
 			<span class="icon-patient-clinician-hd_flag"></span>
-			Previous ophthalmic surgery
+			Previous Dental Surgery
 		</h3>
 		<a href="#" class="toggle-trigger toggle-hide js-toggle">
 			<span class="icon-showhide">
@@ -62,7 +62,7 @@
 		<?php if ($this->checkAccess('OprnEditPreviousOperation')) {?>
 			<div class="box-actions">
 				<button  id="btn-add_previous_operation" class="secondary small">
-					Add Previous ophthalmic surgery
+					Add Previous Dental Surgery
 				</button>
 			</div>
 
@@ -82,7 +82,7 @@
 
 				<fieldset class="field-row">
 
-					<legend><strong>Add previous ophthalmic surgery</strong></legend>
+					<legend><strong>Add previous dental surgery</strong></legend>
 
 					<input type="hidden" name="edit_operation_id" id="edit_operation_id" value="" />
 					<input type="hidden" name="patient_id" value="<?php echo $this->patient->id?>" />
@@ -104,20 +104,6 @@
 							<?php echo CHtml::textField('previous_operation', '', array('autocomplete' => Yii::app()->params['html_autocomplete']))?>
 						</div>
 					</div>
-
-					<fieldset class="row field-row">
-						<legend class="<?php echo $form->columns('label');?>">
-							Side:
-						</legend>
-						<div class="<?php echo $form->columns('field');?>">
-							<label class="inline">
-								<input type="radio" name="previous_operation_side" class="previous_operation_side" value="" checked="checked" /> None
-							</label>
-							<?php foreach (Eye::model()->findAll(array('order' => 'display_order')) as $eye) {?>
-								<label class="inline"><input type="radio" name="previous_operation_side" class="previous_operation_side" value="<?php echo $eye->id?>" /> <?php echo $eye->name?>	</label>
-							<?php }?>
-						</div>
-					</fieldset>
 
 					<?php $this->renderPartial('_fuzzy_date', array('class' => 'previousOperation'))?>
 
