@@ -53,7 +53,7 @@
 		<?php echo CHtml::dropDownList('prescription_item['.$key.'][duration_id]', $item->duration_id, CHtml::listData(DrugDuration::model()->activeOrPk($item->duration_id)->findAll(array('order' => 'display_order')), 'id', 'name'), array('empty' => '-- Select --'))?>
 	</td>
 	<td class="prescriptionItemActions">
-		<a class="removeItem"	href="#">Remove</a>&nbsp;|&nbsp;<a class="taperItem"	href="#">+Taper</a>
+		<a class="removeItem"	href="#">Remove</a>
 	</td>
 	<?php if (isset($patient)) { ?>
 		<td>

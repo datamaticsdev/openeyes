@@ -73,35 +73,7 @@ if (is_a(Yii::app()->getController(), 'DefaultController')) {
 					</div>
 				</fieldset>
 			</div>
-			<div class="large-6 column">
-				<fieldset>
-					<legend><em>Filtered by:</em></legend>
-					<label class="inline" for="drug_type_id">Type:</label>
-					<?php echo CHtml::dropDownList('drug_type_id', null, $element->drugTypes(), array('class' => 'inline drugFilter', 'empty' => '-- Select --')); ?>
-					<label class="inline highlight">
-						No preservative
-						<?php echo CHtml::checkBox('preservative_free', null, array('class' => 'drugFilter'))?>
-					</label>
-				</fieldset>
-			</div>
 		</div>
-		<?php
-        // we need to separate the public and admin view
-        if (is_a(Yii::app()->getController(), 'DefaultController')) {
-            ?>
-			<div class="row field-row">
-				<div class="large-2 column">
-					<label for="drug_set_id">Add Standard Set:</label>
-				</div>
-				<div class="large-3 column end">
-					<?php echo CHtml::dropDownList('drug_set_id', null,
-                        CHtml::listData($element->drugSets(), 'id', 'name'), array('empty' => '-- Select --')); ?>
-				</div>
-			</div>
-		<?php
-
-        }
-        ?>
 		<div class="row field-row">
 			<div class="large-2 column">
 				<div class="field-label">Other Actions</div>
