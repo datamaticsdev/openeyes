@@ -148,12 +148,14 @@ class DefaultController extends BaseEventTypeController
             $errors = array('Consent form' => array('Please select a booking or Unbooked procedures'));
         }
 
-        if ($this->booking_event || $this->unbooked) {
+        $api = Yii::app()->moduleAPI->get('OphTrOperationbooking');
+
+        if (!$api || $this->booking_event || $this->unbooked) {
             parent::actionCreate();
         } else {
             $bookings = array();
 
-            if ($api = Yii::app()->moduleAPI->get('OphTrOperationbooking')) {
+            if ($api) {
                 if ($episode = $this->patient->getEpisodeForCurrentSubspecialty()) {
                     $bookings = $api->getOperationsForEpisode($episode->id);
                 }

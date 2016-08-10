@@ -69,7 +69,7 @@ class Element_OphTrConsent_Procedure extends BaseEventTypeElement
         // will receive user inputs.
         return array(
             array('event_id, eye_id, anaesthetic_type_id, booking_event_id', 'safe'),
-            array('eye_id, anaesthetic_type_id, ', 'required'),
+            array('anaesthetic_type_id, ', 'required'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('id, event_id, eye_id, anaesthetic_type_id, ', 'safe', 'on' => 'search'),
