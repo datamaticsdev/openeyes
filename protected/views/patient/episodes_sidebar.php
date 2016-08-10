@@ -38,7 +38,7 @@ $current_episode = @$this->current_episode;
     if (is_array($ordered_episodes)) {
         foreach ($ordered_episodes as $specialty_episodes) { ?>
             <div class="panel specialty">
-                <h3 class="specialty-title"><?php echo $specialty_episodes['specialty'] ?></h3>
+                <h3 class="specialty-title"><?php echo ucfirst($specialty_episodes['specialty']) ?></h3>
 
                 <?php foreach ($specialty_episodes['episodes'] as $i => $episode) { ?>
 

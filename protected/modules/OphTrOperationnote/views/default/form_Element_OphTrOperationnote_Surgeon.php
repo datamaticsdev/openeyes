@@ -25,8 +25,8 @@
             'assistant_id',
         ),
         array(
-            CHtml::listData($element->surgeons, 'id', 'ReversedFullName'),
-            CHtml::listData($element->surgeons, 'id', 'ReversedFullName'),
+            CHtml::listData($element->surgeons, 'id', 'fullNameAndTitle'),
+            CHtml::listData($element->surgeons, 'id', 'fullNameAndTitle'),
         ),
         array(
             array('empty' => '- Please select -'),
@@ -34,5 +34,5 @@
         ),
         array('field' => 9)
     )?>
-	<?php echo $form->dropDownList($element, 'supervising_surgeon_id', CHtml::listData($element->surgeons, 'id', 'ReversedFullName'), array('empty' => '- None -'), false, array('field' => 3))?>
+	<?php echo $form->dropDownList($element, 'supervising_surgeon_id', CHtml::listData($element->surgeons, 'id', 'fullNameAndTitle'), array('empty' => '- None -'), false, array('field' => 3))?>
 </div>

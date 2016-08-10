@@ -294,7 +294,7 @@ class Patient extends BaseActiveRecordVersioned
                 if ($ep->firm) {
                     if ($ssa = $ep->firm->serviceSubspecialtyAssignment) {
                         $specialty = $ssa->subspecialty->specialty;
-                        $specialty_name = $specialty->name;
+                        $specialty_name = $specialty->adjective;
                         $specialty_code = $specialty->code;
                     } else {
                         continue;
