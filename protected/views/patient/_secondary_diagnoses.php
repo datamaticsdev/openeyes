@@ -28,7 +28,7 @@ $specialty = Specialty::model()->findByAttributes(array('code' => $code));
     <header class="box-header">
         <h3 class="box-title">
             <span class="icon-patient-clinician-hd_flag"></span>
-            Other <?= ucfirst($specialty->adjective) ?> Diagnoses
+            Previous <?= ucfirst($specialty->adjective) ?> Diagnoses
         </h3>
         <a href="#" class="toggle-trigger toggle-hide js-toggle">
 			<span class="icon-showhide">
