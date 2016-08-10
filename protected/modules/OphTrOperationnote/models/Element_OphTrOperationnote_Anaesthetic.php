@@ -319,9 +319,9 @@ class Element_OphTrOperationnote_Anaesthetic extends Element_OpNote
                 $this->addError('anaesthetic_delivery_id', 'Anaesthetic Delivery cannot be blank');
             }
 
-            if ($attribute == 'anaesthetic_complications' && (!$complications || !count($complications))) {
-                $this->addError('anaesthetic_complications', 'Anaesthetic Complications cannot be blank.');
-            }
+//            if ($attribute == 'anaesthetic_complications' && (!$complications || !count($complications))) {
+//                $this->addError('anaesthetic_complications', 'Anaesthetic Complications cannot be blank.');
+//            }
         } else {
             $this->anaesthetist_id = 5;
             $this->anaesthetic_delivery_id = 7;

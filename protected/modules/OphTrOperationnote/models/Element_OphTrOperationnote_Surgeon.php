@@ -97,9 +97,9 @@ class Element_OphTrOperationnote_Surgeon extends Element_OpNote
         return array(
             'id' => 'ID',
             'event_id' => 'Event',
-            'surgeon_id' => 'Surgeon',
-            'assistant_id' => 'Assistant',
-            'supervising_surgeon_id' => 'Supervising surgeon',
+            'surgeon_id' => 'Dentist',
+            'assistant_id' => 'Dental Nurse',
+            'supervising_surgeon_id' => 'Supervising Dentist',
         );
     }
 

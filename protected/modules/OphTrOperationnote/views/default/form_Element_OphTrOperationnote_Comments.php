@@ -27,7 +27,7 @@ $layoutColumns = array(
 <div class="element-fields">
 	<div class="row">
 		<div class="large-6 column">
-			<?php echo $form->textArea($element, 'comments', array(), false, array(), $layoutColumns)?>
+			<?php echo $form->textArea($element, 'comments', array('rows' => 4), false, array(), $layoutColumns)?>
 		</div>
 		<div class="large-6 column">
 			<?php echo $form->dropDownTextSelection($element, 'postop_instructions', $element->postop_instructions_list, array(), $layoutColumns)?>

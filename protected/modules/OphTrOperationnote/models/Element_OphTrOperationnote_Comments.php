@@ -122,9 +122,9 @@ class Element_OphTrOperationnote_Comments extends Element_OpNote
     {
         $criteria = new CDbCriteria();
 
-        $criteria->addCondition('subspecialty_id = :subspecialtyId and site_id = :siteId');
-        $criteria->params[':subspecialtyId'] = Firm::model()->findByPk(Yii::app()->session['selected_firm_id'])->serviceSubspecialtyAssignment->subspecialty_id;
-        $criteria->params[':siteId'] = Yii::app()->session['selected_site_id'];
+//        $criteria->addCondition('subspecialty_id = :subspecialtyId and site_id = :siteId');
+//        $criteria->params[':subspecialtyId'] = Firm::model()->findByPk(Yii::app()->session['selected_firm_id'])->serviceSubspecialtyAssignment->subspecialty_id;
+//        $criteria->params[':siteId'] = Yii::app()->session['selected_site_id'];
 
         $criteria->order = 'display_order asc';
 

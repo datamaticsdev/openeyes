@@ -22,7 +22,7 @@
 	<h3 class="data-title"><?php echo $element->elementType->name ?></h3>
 	<ul class="data-value highlight important">
 		<?php foreach ($element->procedures as $procedure) {?>
-			<li><?php echo $element->eye->adjective?> <?php echo $procedure->term?></li>
+			<li><?php echo $procedure->term?></li>
 		<?php }?>
 	</ul>
 	<div class="sub-elements">

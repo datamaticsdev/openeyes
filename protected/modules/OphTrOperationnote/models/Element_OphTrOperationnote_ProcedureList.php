@@ -63,7 +63,7 @@ class Element_OphTrOperationnote_ProcedureList extends Element_OpNote
         // will receive user inputs.
         return array(
             array('event_id, eye_id, booking_event_id', 'safe'),
-            array('eye_id, procedures', 'required'),
+            array('procedures', 'required'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('id, event_id, eye_id', 'safe', 'on' => 'search'),
@@ -220,4 +220,10 @@ class Element_OphTrOperationnote_ProcedureList extends Element_OpNote
     {
         return false;
     }
+
+    public function setDefaultOptions()
+    {
+        $this->eye_id = 1;
+    }
+
 }

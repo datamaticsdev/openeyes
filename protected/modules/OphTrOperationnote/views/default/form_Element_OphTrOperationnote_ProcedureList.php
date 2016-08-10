@@ -29,14 +29,14 @@
 
 	<div class="element-fields">
 		<?php echo $form->hiddenInput($element, 'booking_event_id')?>
-		<?php echo $form->radioButtons($element, 'eye_id', $element->eyeOptions, ($element->eye() ? $element->eye()->id : null), null, null, null, null, null, array('label' => 2, 'field' => 10))?>
+		<?php echo $form->hiddenInput($element, 'eye_id') ?>
 		<?php
         $form->widget('application.widgets.ProcedureSelection', array(
             'element' => $element,
             'selected_procedures' => $element->procedures,
             'newRecord' => true,
             'last' => true,
-            'hidden' => ($this->action->id == 'create' && $element->eye == null && !@$_POST['Element_OphTrOperationnote_ProcedureList']['eye_id']),
+            'hidden' => false,
         ));
         ?>
 	</div>

@@ -718,7 +718,7 @@ class DefaultController extends BaseEventTypeController
      */
     public function getAnaesthetic_agent_list($element)
     {
-        $agents = $this->getAnaestheticAgentsBySiteAndSubspecialty();
+        $agents = AnaestheticAgent::model()->active()->findAll();
         $list = CHtml::listData($agents, 'id', 'name');
         $curr_list = CHtml::listData($element->anaesthetic_agents, 'id', 'name');
         if ($missing = array_diff($curr_list, $list)) {

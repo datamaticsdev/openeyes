@@ -18,21 +18,21 @@
  */
 ?>
 <section class="element">
-	<h3 class="element-title highlight">Location</h3>
-	<div class="element-data">
-		<div class="row data-row">
-			<div class="large-4 column">
-				<h4 class="data-title"><?php echo CHtml::encode($element->getAttributeLabel('site_id'))?></h4>
-				<div class="data-value"><?php echo $element->site->name?></div>
-			</div>
-			<div class="large-4 column">
-				<h4 class="data-title"><?php echo CHtml::encode($element->getAttributeLabel('theatre_id'))?></h4>
-				
-				<?php $hasModule = Yii::app()->hasModule('OphTrOperationbooking'); ?>
-				<div class="data-value <?php echo $hasModule ? '' : 'none'?>">
-					<?php echo $hasModule && $element->theatre ? $element->theatre->name : 'None'?>
-				</div>
-			</div>
-		</div>
-	</div>
+    <h3 class="element-title highlight">Location</h3>
+    <div class="element-data">
+        <div class="row data-row">
+            <div class="large-4 column">
+                <h4 class="data-title"><?php echo CHtml::encode($element->getAttributeLabel('site_id')) ?></h4>
+                <div class="data-value"><?php echo $element->site->name ?></div>
+            </div>
+            <?php if ($hasModule = Yii::app()->hasModule('OphTrOperationbooking')) { ?>
+                <div class="large-4 column">
+                    <h4 class="data-title"><?php echo CHtml::encode($element->getAttributeLabel('theatre_id')) ?></h4>
+                    <div class="data-value <?php echo $hasModule ? '' : 'none' ?>">
+                        <?php echo $hasModule && $element->theatre ? $element->theatre->name : 'None' ?>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
 </section>
