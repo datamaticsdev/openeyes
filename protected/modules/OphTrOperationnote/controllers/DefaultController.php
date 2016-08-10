@@ -245,13 +245,15 @@ class DefaultController extends BaseEventTypeController
             $errors = array('Operation' => array('Please select a booked operation'));
         }
 
-        if ($this->booking_operation || $this->unbooked) {
+        $api = Yii::app()->moduleAPI->get('OphTrOperationbooking');
+
+        if (!$api || $this->booking_operation || $this->unbooked) {
             parent::actionCreate();
         } else {
             // set up form for selecting a booking for the Op note
             $bookings = array();
 
-            if ($api = Yii::app()->moduleAPI->get('OphTrOperationbooking')) {
+            if ($api) {
                 $bookings = $api->getOpenBookingsForEpisode($this->episode->id);
             }
 
