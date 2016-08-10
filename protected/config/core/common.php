@@ -54,7 +54,7 @@ return array(
         'gii' => array(
             'class' => 'system.gii.GiiModule',
             'password' => 'openeyes',
-            'ipFilters' => array('127.0.0.1'),
+            'ipFilters' => array(),
         ),
         'oldadmin',
     ),
@@ -298,7 +298,7 @@ return array(
                 'uri' => '#',
                 'position' => 2,
                 'userrule' => 'isSurgeon',
-                'restricted' => array('admin', 'Report', 'NOD Export'),
+                'restricted' => array('admin', 'Report'),
                 'sub' => array(
                     'admin' => array(
                         'title' => 'Admin',
@@ -317,25 +317,6 @@ return array(
                         'uri' => 'report',
                         'position' => 3,
                         'restricted' => array('Report'),
-                    ),
-                    'cataract' => array(
-                        'title' => 'Cataract Audit',
-                        'uri' => 'dashboard/cataract',
-                        'position' => 4,
-                        'userrule' => 'isSurgeon',
-                        'restricted' => array('admin'),
-                        'options' => array('target' => '_blank'), ),
-                    'nodexport' => array(
-                        'title' => 'NOD Export',
-                        'uri' => 'NodExport',
-                        'position' => 5,
-                        'restricted' => array('NOD Export'),
-                    ),
-                    'patientmergerequest' => array(
-                        'title' => 'Patient Merge',
-                        'uri' => 'patientMergeRequest/index',
-                        'position' => 6,
-                        'restricted' => array('Patient Merge', 'Patient Merge Request'),
                     ),
                 ),
             ),
