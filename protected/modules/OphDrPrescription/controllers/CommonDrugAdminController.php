@@ -37,7 +37,7 @@ class CommonDrugAdminController extends BaseAdminController
                     'label' => 'Site',
                     'dropDownName' => 'site_id',
                     'defaultValue' => Yii::app()->session['selected_site_id'],
-                    'listModel' => Site::model(),
+                    'listModel' => Site::model()->active(),
                     'listIdField' => 'id',
                     'listDisplayField' => 'short_name',
                     ),

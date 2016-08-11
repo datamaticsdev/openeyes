@@ -69,6 +69,10 @@ class Site extends BaseActiveRecordVersioned
             'ContactBehavior' => array(
                 'class' => 'application.behaviors.ContactBehavior',
             ),
+            'LookupTable' => array(
+                'class' => 'application.behaviors.LookupTable'
+            )
+
         );
     }
 
