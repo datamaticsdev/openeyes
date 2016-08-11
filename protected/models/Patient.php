@@ -1854,4 +1854,14 @@ class Patient extends BaseActiveRecordVersioned
 
         return $patient->episodes[0]->id;
     }
+
+    /**
+     * Get the date of the most recent event
+     */
+    public function getEvd()
+    {
+        if ($event = $this->getLatestEvent()) {
+            return Helper::convertDate2NHS($event->event_date);
+        }
+    }
 }
