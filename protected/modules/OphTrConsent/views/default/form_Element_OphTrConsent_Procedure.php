@@ -26,8 +26,6 @@
         'durations' => false,
         'identifier' => 'procedures',
         'read_only' => false,
-        'restrict' => 'unbooked',
-        'restrict_common' => 'unbooked',
     ))?>
 	<?php echo $form->radioButtons($element, 'anaesthetic_type_id', 'AnaestheticType')?>
 	<?php $form->widget('application.widgets.ProcedureSelection', array(
