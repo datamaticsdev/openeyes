@@ -150,10 +150,12 @@ class Element_OphDrPrescription_Details extends BaseEventTypeElement
         $params = array(':subSpecialtyId' => $subspecialty_id, ':siteId' => $site_id);
 
         return Drug::model()->active()->findAll(array(
-                    'condition' => 'ssd.subspecialty_id = :subSpecialtyId AND ssd.site_id = :siteId',
+                    //'condition' => 'ssd.subspecialty_id = :subSpecialtyId AND ssd.site_id = :siteId',
                     'join' => 'JOIN site_subspecialty_drug ssd ON ssd.drug_id = t.id',
                     'order' => 'name',
-                    'params' => $params,
+                    'group' => 't.id',
+                    'distinct' => 'true'
+                    //'params' => $params,
         ));
     }
 
