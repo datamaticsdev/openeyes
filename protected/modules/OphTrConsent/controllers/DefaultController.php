@@ -54,6 +54,7 @@ class DefaultController extends BaseEventTypeController
                 $element->additional_procedures = $additional;
             }
         }
+        $element->anaesthetic_type_id = null;
     }
 
     /**
