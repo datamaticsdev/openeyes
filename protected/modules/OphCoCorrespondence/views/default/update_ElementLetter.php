@@ -147,6 +147,7 @@ $layoutColumns = $form->layoutColumns;
                     ))?>
 				</div>
 			<?php }?>
+			&nbsp;
 		</div>
 		<div class="large-<?php echo $layoutColumns['field'];?> column end">
 			<?php echo $form->textArea($element, 'body', array('rows' => 20, 'label' => false, 'nowrapper' => true), false, array('class' => 'address'))?>
