@@ -36,7 +36,7 @@
 	}
 	&.stuck {
 		@media screen {
-			background: #307aaf;
+			background: #d4e8f7 image-url("_structure/gradient_bg.png") 0 0 repeat-x;
 			position: fixed;
 			top: 0;
 			z-index: 200;

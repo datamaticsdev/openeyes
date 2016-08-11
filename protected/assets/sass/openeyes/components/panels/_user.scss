@@ -53,11 +53,6 @@
 		@extend .clearfix;
 		@include panel(#dae6f1, 0 10px 5px 10px);
 		@include border-radius(0 0 $global-radius $global-radius);
-		background: {
-			image: image-url("_elements/icons/user/idcard_bg.png");
-			position: left bottom;
-			repeat: no-repeat;
-		};
 		border-color: #b3b0ae;
 		border-top: 0;
 		margin: 0;
