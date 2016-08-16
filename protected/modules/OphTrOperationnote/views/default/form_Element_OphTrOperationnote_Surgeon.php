@@ -26,7 +26,7 @@
         ),
         array(
             CHtml::listData($element->surgeons, 'id', 'fullNameAndTitle'),
-            CHtml::listData($element->surgeons, 'id', 'fullNameAndTitle'),
+            CHtml::listData($element->nonSurgeons, 'id', 'fullNameAndTitle'),
         ),
         array(
             array('empty' => '- Please select -'),

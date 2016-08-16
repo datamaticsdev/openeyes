@@ -404,6 +404,18 @@ class User extends BaseActiveRecordVersioned
         return self::model()->findAll($criteria);
     }
 
+    public static function getNonSurgeons()
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare('is_surgeon', 0);
+        $criteria->compare('is_consultant', 0);
+        $criteria->compare('is_clinical', 1);
+        $criteria->compare('active', 1);
+        $criteria->order = 'last_name,first_name asc';
+
+        return self::model()->findAll($criteria);
+    }
+
     public function audit($target, $action, $data = null, $log = false, $properties = array())
     {
         $properties['user_id'] = $this->id;

@@ -153,4 +153,9 @@ class Element_OphTrOperationnote_Surgeon extends Element_OpNote
 
         return $this->surgeonlist;
     }
+
+    public function getNonSurgeons()
+    {
+        return User::model()->getNonSurgeons();
+    }
 }
